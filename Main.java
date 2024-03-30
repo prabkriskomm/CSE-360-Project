@@ -9,12 +9,20 @@ public class Main extends Application {
  @Override
  public void start(Stage primaryStage) {
      try {
-         StaffHomeTab staffHomeTab = new StaffHomeTab();
-         Scene scene = new Scene(staffHomeTab, 800, 600);
+    	 
+    	 
+         //StaffHomeTab staffHomeTab = new StaffHomeTab();
+         //Scene scene = new Scene(staffHomeTab, 800, 600);
+         
+         PatientHomeTab patientHomeTab = new PatientHomeTab();
+         Scene scene = new Scene(patientHomeTab, 800, 600);
+         
+         
          scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
          primaryStage.setScene(scene);
-         primaryStage.setTitle("Mediate - Staff Home");
+         primaryStage.setTitle("Mediate");
          primaryStage.show();
+         
      } catch (Exception e) {
          e.printStackTrace();
      }
