@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 
 public class StaffHomeTab extends BorderPane {
 
+    private VBox messageDisplayArea;    //doc message system
     private TabPane tabs;
 
     public StaffHomeTab() {
@@ -68,6 +69,8 @@ public class StaffHomeTab extends BorderPane {
         tabs.getTabs().addAll(homeTab, intakeTab, recordsTab, diagnosisTab, messagesTab);
         
         this.setTop(tabs);
+        
+         messagesTab.setContent(messageSys());
     }
 
 
@@ -94,5 +97,88 @@ public class StaffHomeTab extends BorderPane {
         Label welcomeLabel = new Label("Welcome!");
         welcomeLabel.setFont(new Font("Arial", 30));
 
+    }
+    
+    //Doc Message System
+    	private BorderPane messageSys() {
+        messageDisplayArea = new VBox(5);
+        messageDisplayArea.setPadding(new Insets(10));
+        messageDisplayArea.setFillWidth(true);
+
+        ScrollPane scrollPane = new ScrollPane(messageDisplayArea);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setVvalue(1.0); 
+
+        TextArea textArea = new TextArea();
+        textArea.setPromptText("Type your message here");
+
+        Button sendButton = new Button("Send");
+        sendButton.setMaxWidth(Double.MAX_VALUE);
+        sendButton.setOnAction(event -> {
+            String message = textArea.getText();
+            if (!message.isEmpty()) {
+                Label messageLabel = new Label(message);
+                messageLabel.setMaxWidth(Double.MAX_VALUE);
+                messageLabel.setAlignment(Pos.TOP_RIGHT); 
+                messageLabel.setStyle("-fx-background-color: lightgray; -fx-padding: 5;");
+                messageDisplayArea.getChildren().add(messageLabel); 
+                textArea.clear();
+
+                
+                scrollPane.setVvalue(scrollPane.getVmax()); 
+            }
+        });
+
+
+        // Create End Chat button
+        Button endChatButton = new Button("End Chat");
+        endChatButton.setOnAction(event -> {
+            File file = new File("chat_history.txt");
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                for (Node message : messageDisplayArea.getChildren()) {
+                    if (message instanceof Label) {
+                        Label messageLabel = (Label) message;
+                        
+                        String formattedMessage = "Doctor: " + messageLabel.getText();
+                        writer.write(formattedMessage);
+                        writer.newLine();
+                    }
+                }
+                System.out.println("Chat saved to " + file.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            textArea.clear();
+            messageDisplayArea.getChildren().clear(); 
+        });
+
+        TextField searchBar = new TextField();
+        searchBar.setPromptText("Search...");
+        searchBar.textProperty().addListener((observable, oldValue, Patient) -> {
+            // have to get information from a file with all Patient info 
+        	//Chat names = patient names find the chat
+            System.out.println("Searching for: " + Patient);
+        });
+            
+        VBox search = new VBox(10);
+        search.getChildren().addAll(searchBar);
+        
+        VBox buttonBox = new VBox(10);
+        buttonBox.getChildren().addAll(sendButton, endChatButton);
+        VBox.setVgrow(sendButton, Priority.ALWAYS);
+        VBox.setVgrow(endChatButton, Priority.ALWAYS);
+
+        HBox textBox = new HBox(10);
+        HBox.setHgrow(textArea, Priority.ALWAYS);
+        textBox.getChildren().addAll(textArea, buttonBox);
+        textBox.setPadding(new Insets(10));
+
+        BorderPane messageLayout = new BorderPane();
+        messageLayout.setLeft(search);
+        messageLayout.setCenter(scrollPane);
+        messageLayout.setBottom(textBox);
+
+        return messageLayout;
     }
 }
