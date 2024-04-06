@@ -14,7 +14,6 @@ import javafx.scene.layout.VBox;
 
 public class StaffHomeTab extends BorderPane {
 
-    private VBox messageDisplayArea;    //doc message system
     private TabPane tabs;
 
     public StaffHomeTab() {
@@ -34,10 +33,10 @@ public class StaffHomeTab extends BorderPane {
         Tab diagnosisTab = new Tab("Diagnosis");
         Tab messagesTab = new Tab("Messages");
 
-        
-        VBox homeLayout = new VBox(10); 
+        // Create a VBox layout for the Home tab content
+        VBox homeLayout = new VBox(10); // Adjust the spacing as needed
         homeLayout.setAlignment(Pos.CENTER);
-        homeLayout.setStyle("-fx-background-color: #D3D3D3;"); 
+        homeLayout.setStyle("-fx-background-color: #D3D3D3;"); // This sets the background to light gray
 
         Label welcomeLabel = new Label("Welcome!");
         welcomeLabel.setFont(new Font("Arial", 40));
@@ -45,12 +44,12 @@ public class StaffHomeTab extends BorderPane {
         tabs.setStyle("-fx-background-color: #D3D3D3; -fx-border-color: black;");
         
         for(Tab tab : tabs.getTabs()) {
-          
+            // This will apply to all tabs, you might need to adjust this if you want different styles for each tab
             tab.setStyle("-fx-background-color: #D3D3D3; -fx-border-color: black; -fx-border-width: 0 0 1 0;");
         }
         
-        
-        VBox.setMargin(welcomeLabel, new Insets(-10, 0, 30, 0)); 
+        // Add some spacing above the welcome label if needed
+        VBox.setMargin(welcomeLabel, new Insets(-10, 0, 30, 0)); // Reduces space above the welcome label
 
         Label logoLabel = new Label("MEDIATE");
         logoLabel.setFont(new Font("Arial", 35));
@@ -58,19 +57,29 @@ public class StaffHomeTab extends BorderPane {
         
         Label taglineLabel = new Label("Empowering Health, One Click at a Time.");
         taglineLabel.setFont(new Font("Arial", 19));
-        VBox.setMargin(taglineLabel, new Insets(0, 0, 5, 0)); 
+        VBox.setMargin(taglineLabel, new Insets(0, 0, 5, 0)); // Adjust the bottom margin to move the slogan up
 
-     
+        // Add the labels to the VBox
         homeLayout.getChildren().addAll(welcomeLabel, logoLabel, taglineLabel);
         
-      
+        // Set the VBox as the content of the Home tab
         homeTab.setContent(homeLayout);
 
         tabs.getTabs().addAll(homeTab, intakeTab, recordsTab, diagnosisTab, messagesTab);
         
         this.setTop(tabs);
         
-         messagesTab.setContent(messageSys());
+     // Create and set the Records page in the Records tab
+        Records recordsPage = new Records();
+        recordsTab.setContent(recordsPage);
+        
+        Diagnosis diagnosisPage = new Diagnosis();
+        diagnosisTab.setContent(diagnosisPage);
+        
+        PatientIntake intakePage = new PatientIntake();
+        intakeTab.setContent(intakePage);
+
+        
     }
 
 
@@ -82,14 +91,15 @@ public class StaffHomeTab extends BorderPane {
         
         mediateLabel.setFont(new Font("Arial", 25));
         
-       
+        // Align the label to the top right
         StackPane.setAlignment(mediateLabel, Pos.TOP_RIGHT);
+        // Margin can be adjusted to control the spacing from the top and right edges
         StackPane.setMargin(mediateLabel, new Insets(1, 10, 0, 0));
         
         StackPane stackPane = new StackPane();
         stackPane.getChildren().addAll(tabs, mediateLabel);
 
-        
+        // Set the StackPane containing the TabPane and the label to the center
         this.setCenter(stackPane);
     }
     
@@ -97,88 +107,5 @@ public class StaffHomeTab extends BorderPane {
         Label welcomeLabel = new Label("Welcome!");
         welcomeLabel.setFont(new Font("Arial", 30));
 
-    }
-    
-    //Doc Message System
-    	private BorderPane messageSys() {
-        messageDisplayArea = new VBox(5);
-        messageDisplayArea.setPadding(new Insets(10));
-        messageDisplayArea.setFillWidth(true);
-
-        ScrollPane scrollPane = new ScrollPane(messageDisplayArea);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setVvalue(1.0); 
-
-        TextArea textArea = new TextArea();
-        textArea.setPromptText("Type your message here");
-
-        Button sendButton = new Button("Send");
-        sendButton.setMaxWidth(Double.MAX_VALUE);
-        sendButton.setOnAction(event -> {
-            String message = textArea.getText();
-            if (!message.isEmpty()) {
-                Label messageLabel = new Label(message);
-                messageLabel.setMaxWidth(Double.MAX_VALUE);
-                messageLabel.setAlignment(Pos.TOP_RIGHT); 
-                messageLabel.setStyle("-fx-background-color: lightgray; -fx-padding: 5;");
-                messageDisplayArea.getChildren().add(messageLabel); 
-                textArea.clear();
-
-                
-                scrollPane.setVvalue(scrollPane.getVmax()); 
-            }
-        });
-
-
-        // Create End Chat button
-        Button endChatButton = new Button("End Chat");
-        endChatButton.setOnAction(event -> {
-            File file = new File("chat_history.txt");
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                for (Node message : messageDisplayArea.getChildren()) {
-                    if (message instanceof Label) {
-                        Label messageLabel = (Label) message;
-                        
-                        String formattedMessage = "Doctor: " + messageLabel.getText();
-                        writer.write(formattedMessage);
-                        writer.newLine();
-                    }
-                }
-                System.out.println("Chat saved to " + file.getAbsolutePath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            textArea.clear();
-            messageDisplayArea.getChildren().clear(); 
-        });
-
-        TextField searchBar = new TextField();
-        searchBar.setPromptText("Search...");
-        searchBar.textProperty().addListener((observable, oldValue, Patient) -> {
-            // have to get information from a file with all Patient info 
-        	//Chat names = patient names find the chat
-            System.out.println("Searching for: " + Patient);
-        });
-            
-        VBox search = new VBox(10);
-        search.getChildren().addAll(searchBar);
-        
-        VBox buttonBox = new VBox(10);
-        buttonBox.getChildren().addAll(sendButton, endChatButton);
-        VBox.setVgrow(sendButton, Priority.ALWAYS);
-        VBox.setVgrow(endChatButton, Priority.ALWAYS);
-
-        HBox textBox = new HBox(10);
-        HBox.setHgrow(textArea, Priority.ALWAYS);
-        textBox.getChildren().addAll(textArea, buttonBox);
-        textBox.setPadding(new Insets(10));
-
-        BorderPane messageLayout = new BorderPane();
-        messageLayout.setLeft(search);
-        messageLayout.setCenter(scrollPane);
-        messageLayout.setBottom(textBox);
-
-        return messageLayout;
     }
 }

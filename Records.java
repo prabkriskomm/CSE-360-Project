@@ -1,3 +1,4 @@
+
 package application;
 
 import javafx.geometry.Insets;
@@ -102,4 +103,3 @@ public class Records extends GridPane {
         // For example, create an instance of Records and display it in a stage
     }
 }
-
