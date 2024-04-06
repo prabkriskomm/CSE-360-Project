@@ -57,7 +57,17 @@ public class PatientVisitsTab extends BorderPane {
 
         tabs.getTabs().addAll(homeTab, healthRecordTab, messagesTab, visitsTab);
 
-       
+	//when this button is hit a new tab will open to edit profile, I need to make it closeable somehow    
+	Button editProfileButton = new Button("Edit Profile");
+        editProfileButton.setOnAction(e -> {
+            Tab editProfileTab = ChangeContactInfo.createEditProfileTab();
+            tabs.getTabs().add(editProfileTab);
+            tabs.getSelectionModel().select(editProfileTab);
+        });
+        
+        //add a simple button on the home tab
+        homeTab.setContent(editProfileButton);
+	    
         setCenter(tabs);
     }
 
