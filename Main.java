@@ -16,10 +16,11 @@ public class Main extends Application {
          
          PatientHomeTab patientHomeTab = new PatientHomeTab();
          Scene scene = new Scene(patientHomeTab, 800, 600);
-         
+	 Scene scene2 = new Scene(patientVisitsTab, 800, 600); //Movi added this line
+
          
          scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-         primaryStage.setScene(scene);
+         primaryStage.setScene(scene2);
          primaryStage.setTitle("Mediate");
          primaryStage.show();
          
