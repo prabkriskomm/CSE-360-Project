@@ -98,13 +98,8 @@ public class PatientVisitsTab extends BorderPane {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(table);
         
-        Button scheduleVisitButton = new Button("Schedule Visit");
-
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(scrollPane);
-        borderPane.setBottom(scheduleVisitButton);
-
-        BorderPane.setAlignment(scheduleVisitButton, Pos.BOTTOM_LEFT);
 
         this.getChildren().add(borderPane);
 
