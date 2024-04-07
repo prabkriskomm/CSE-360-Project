@@ -2,6 +2,7 @@ package application;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -17,46 +18,78 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import javafx.scene.Node;
-
-
 
 public class PatientHomeTab extends BorderPane {
 
-    private VBox messageDisplayArea; 
+    private VBox messageDisplayArea;
+	private TabPane tabs;
 
     public PatientHomeTab() {
         createTabs();
-        
     }
 
     private void createTabs() {
         TabPane tabs = new TabPane();
-        tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-        Tab homeTab = new Tab("Home");
-        Tab healthRecordTab = new Tab("Health Record");
-        Tab messagesTab = new Tab("Messages");
-        Tab visitsTab = new Tab("Visits");
-
-        
-        messagesTab.setContent(createMessagingInterface());
+        Tab homeTab = new Tab("Home", createHomeInterface());
+        Tab healthRecordTab = new Tab("Health Record", new PatientHealthRecord());
+        Tab messagesTab = new Tab("Messages", createMessagingInterface());
+        Tab visitsTab = new Tab("Visits", new PatientVisitsTab());
 
         tabs.getTabs().addAll(homeTab, healthRecordTab, messagesTab, visitsTab);
+        tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-       
         setCenter(tabs);
     }
 
-    private BorderPane createMessagingInterface() {
+    private BorderPane createHomeInterface() {
+    	
+        Button initialsButton = new Button("JS");
+        initialsButton.setStyle("-fx-font-weight: bold;");
+        Button editProfileButton = new Button("Edit Profile");
         
+        editProfileButton.setOnAction(e -> {
+            Tab editProfileTab = ChangeContactInfo.createEditProfileTab();
+            
+			tabs.getTabs().add(editProfileTab);
+            tabs.getSelectionModel().select(editProfileTab);
+        });
+        
+
+        BorderPane topLayout = new BorderPane();
+        topLayout.setRight(initialsButton);
+
+        Label welcomeLabel = new Label("Welcome, John!");
+        welcomeLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        Label mediateLabel = new Label("MEDIATE");
+        mediateLabel.setStyle("-fx-font-size: 20px;");
+
+        Label oneClickLabel = new Label("Empowering Health, One Click at a Time.");
+        oneClickLabel.setStyle("-fx-font-size: 16px;");
+
+        VBox sloganBox = new VBox(mediateLabel, oneClickLabel);
+        sloganBox.setAlignment(Pos.CENTER);
+
+        VBox centerBox = new VBox(welcomeLabel, sloganBox);
+        centerBox.setAlignment(Pos.CENTER);
+        centerBox.setSpacing(10);
+
+        BorderPane homeLayout = new BorderPane();
+        homeLayout.setTop(topLayout);
+        homeLayout.setCenter(centerBox);
+
+        return homeLayout;
+    }
+
+    private BorderPane createMessagingInterface() {
         messageDisplayArea = new VBox(5);
         messageDisplayArea.setPadding(new Insets(10));
         messageDisplayArea.setFillWidth(true);
 
         ScrollPane scrollPane = new ScrollPane(messageDisplayArea);
         scrollPane.setFitToWidth(true);
-        scrollPane.setVvalue(1.0); 
+        scrollPane.setVvalue(1.0);
 
         TextArea messageArea = new TextArea();
         messageArea.setPromptText("Type your message here");
@@ -68,18 +101,14 @@ public class PatientHomeTab extends BorderPane {
             if (!message.isEmpty()) {
                 Label messageLabel = new Label(message);
                 messageLabel.setMaxWidth(Double.MAX_VALUE);
-                messageLabel.setAlignment(Pos.TOP_RIGHT); 
+                messageLabel.setAlignment(Pos.TOP_RIGHT);
                 messageLabel.setStyle("-fx-background-color: lightgray; -fx-padding: 5;");
-                messageDisplayArea.getChildren().add(messageLabel); 
+                messageDisplayArea.getChildren().add(messageLabel);
                 messageArea.clear();
-
-                
-                scrollPane.setVvalue(scrollPane.getVmax()); 
+                scrollPane.setVvalue(scrollPane.getVmax());
             }
         });
 
-
-        // Create End Chat button
         Button endChatButton = new Button("End Chat");
         endChatButton.setOnAction(event -> {
             File file = new File("chat_history.txt");
@@ -87,7 +116,6 @@ public class PatientHomeTab extends BorderPane {
                 for (Node messageNode : messageDisplayArea.getChildren()) {
                     if (messageNode instanceof Label) {
                         Label messageLabel = (Label) messageNode;
-                        
                         String formattedMessage = "Patient: " + messageLabel.getText();
                         writer.write(formattedMessage);
                         writer.newLine();
@@ -97,15 +125,11 @@ public class PatientHomeTab extends BorderPane {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             messageArea.clear();
-            messageDisplayArea.getChildren().clear(); 
+            messageDisplayArea.getChildren().clear();
         });
 
-
-
-        VBox buttonBox = new VBox(10);
-        buttonBox.getChildren().addAll(sendButton, endChatButton);
+        VBox buttonBox = new VBox(10, sendButton, endChatButton);
         VBox.setVgrow(sendButton, Priority.ALWAYS);
         VBox.setVgrow(endChatButton, Priority.ALWAYS);
 
@@ -119,9 +143,5 @@ public class PatientHomeTab extends BorderPane {
         messageLayout.setBottom(messageBox);
 
         return messageLayout;
-        
-        
     }
-    
-   
 }
