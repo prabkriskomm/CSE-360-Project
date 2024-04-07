@@ -19,61 +19,21 @@ public class Visit {
         this.height = height;
     }
 
-    // Getters and setters
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public String getBloodPressure() {
-        return bloodPressure;
-    }
-
-    public void setBloodPressure(String bloodPressure) {
-        this.bloodPressure = bloodPressure;
-    }
-
-    public int getHeartRate() {
-        return heartRate;
-    }
-
-    public void setHeartRate(int heartRate) {
-        this.heartRate = heartRate;
-    }
-
-    public double getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
-    }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
-    public double getHeight() {
-        return height;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
-    }
+    // Getters
+    public String getDate() { return date; }
+    public String getSummary() { return summary; }
+    public String getBloodPressure() { return bloodPressure; }
+    public int getHeartRate() { return heartRate; }
+    public double getTemperature() { return temperature; }
+    public double getWeight() { return weight; }
+    public double getHeight() { return height; }
+    
+    // Setters
+    public void setDate(String date) { this.date = date; }
+    public void setSummary(String summary) { this.summary = summary; }
+    public void setBloodPressure(String bloodPressure) { this.bloodPressure = bloodPressure; }
+    public void setHeartRate(int heartRate) { this.heartRate = heartRate; }
+    public void setTemperature(double temperature) { this.temperature = temperature; }
+    public void setWeight(double weight) { this.weight = weight; }
+    public void setHeight(double height) { this.height = height; }
 }
-
