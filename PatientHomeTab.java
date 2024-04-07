@@ -29,7 +29,9 @@ public class PatientHomeTab extends BorderPane {
     }
 
     private void createTabs() {
-        TabPane tabs = new TabPane();
+    	tabs = new TabPane();
+    	
+        //TabPane tabs = new TabPane();
 
         Tab homeTab = new Tab("Home", createHomeInterface());
         Tab healthRecordTab = new Tab("Health Record", new PatientHealthRecord());
@@ -44,17 +46,20 @@ public class PatientHomeTab extends BorderPane {
 
     private BorderPane createHomeInterface() {
     	
+    	
+      
+    	
         Button initialsButton = new Button("JS");
         initialsButton.setStyle("-fx-font-weight: bold;");
-        Button editProfileButton = new Button("Edit Profile");
         
-        editProfileButton.setOnAction(e -> {
+        initialsButton.setOnAction(e -> {
             Tab editProfileTab = ChangeContactInfo.createEditProfileTab();
-            
-			tabs.getTabs().add(editProfileTab);
+            tabs.getTabs().add(editProfileTab);
             tabs.getSelectionModel().select(editProfileTab);
         });
+       
         
+
 
         BorderPane topLayout = new BorderPane();
         topLayout.setRight(initialsButton);
