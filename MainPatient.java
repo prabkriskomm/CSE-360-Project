@@ -1,16 +1,16 @@
 package application;
-//team 9 is amazing
+	
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
-public class Main extends Application {
+public class MainPatient extends Application {
  @Override
  public void start(Stage primaryStage) {
      try {
     	 
-         StaffHomeTab staffHomeTab = new StaffHomeTab();
-         Scene scene = new Scene(staffHomeTab, 800, 600);
+         PatientHomeTab PatientHomeTab = new PatientHomeTab();
+         Scene scene = new Scene(PatientHomeTab, 800, 600);
          
          
          scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
