@@ -2,38 +2,83 @@ package application;
 
 public class Visit {
     private String date;
-    private String summary;
-    private String bloodPressure;
-    private int heartRate;
-    private double temperature;
-    private double weight;
+    private String diagnosis;
+    private String courseOfAction;
+    private int BP;
+    private int HR;
+    private double temp;
     private double height;
+    private double weight;
 
-    public Visit(String date, String summary, String bloodPressure, int heartRate, double temperature, double weight, double height) {
+    // Getter and Setter methods for date
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
         this.date = date;
-        this.summary = summary;
-        this.bloodPressure = bloodPressure;
-        this.heartRate = heartRate;
-        this.temperature = temperature;
-        this.weight = weight;
+    }
+
+    // Getter and Setter methods for diagnosis
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
+    // Getter and Setter methods for courseOfAction
+    public String getCourseOfAction() {
+        return courseOfAction;
+    }
+
+    public void setCourseOfAction(String courseOfAction) {
+        this.courseOfAction = courseOfAction;
+    }
+
+    // Getter and Setter methods for BP
+    public int getBP() {
+        return BP;
+    }
+
+    public void setBP(int BP) {
+        this.BP = BP;
+    }
+
+    // Getter and Setter methods for HR
+    public int getHR() {
+        return HR;
+    }
+
+    public void setHR(int HR) {
+        this.HR = HR;
+    }
+
+    // Getter and Setter methods for temp
+    public double getTemp() {
+        return temp;
+    }
+
+    public void setTemp(double temp) {
+        this.temp = temp;
+    }
+
+    // Getter and Setter methods for height
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
         this.height = height;
     }
 
-    // Getters
-    public String getDate() { return date; }
-    public String getSummary() { return summary; }
-    public String getBloodPressure() { return bloodPressure; }
-    public int getHeartRate() { return heartRate; }
-    public double getTemperature() { return temperature; }
-    public double getWeight() { return weight; }
-    public double getHeight() { return height; }
-    
-    // Setters
-    public void setDate(String date) { this.date = date; }
-    public void setSummary(String summary) { this.summary = summary; }
-    public void setBloodPressure(String bloodPressure) { this.bloodPressure = bloodPressure; }
-    public void setHeartRate(int heartRate) { this.heartRate = heartRate; }
-    public void setTemperature(double temperature) { this.temperature = temperature; }
-    public void setWeight(double weight) { this.weight = weight; }
-    public void setHeight(double height) { this.height = height; }
+    // Getter and Setter methods for weight
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
 }
