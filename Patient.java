@@ -7,6 +7,7 @@ public class Patient {
     private String patientId;
     private String patientName;
     private List<Visit> visits;
+    private String PasswordField;
 
     public Patient(String patientId, String patientName) {
         this.patientId = patientId;
@@ -25,6 +26,10 @@ public class Patient {
 
     public String getPatientName() {
         return patientName;
+    }
+
+    public String PasswordField(){
+        return PasswordField;
     }
 
     public void setPatientName(String patientName) {
