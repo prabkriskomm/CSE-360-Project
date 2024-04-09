@@ -49,7 +49,7 @@ public class PatientHomeTab extends BorderPane {
     	
       
     	
-        Button initialsButton = new Button("JS");
+        Button initialsButton = new Button("Edit Profile");
         initialsButton.setStyle("-fx-font-weight: bold;");
         
         initialsButton.setOnAction(e -> {
@@ -64,7 +64,7 @@ public class PatientHomeTab extends BorderPane {
         BorderPane topLayout = new BorderPane();
         topLayout.setRight(initialsButton);
 
-        Label welcomeLabel = new Label("Welcome, John!");
+        Label welcomeLabel = new Label("Welcome, John!"); //John needs to be changed to Patient.getFirstName()
         welcomeLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         Label mediateLabel = new Label("MEDIATE");
