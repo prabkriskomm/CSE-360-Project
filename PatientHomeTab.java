@@ -23,15 +23,19 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javafx.stage.Stage;
+
 public class PatientHomeTab extends BorderPane {
 	private String patientName;
     private VBox messageDisplayArea;
 	private TabPane tabs;
-	
+	private Stage primaryStage;
 
-    public PatientHomeTab() {
-        createTabs();
-    }
+	 public PatientHomeTab(Stage primaryStage) {
+	        this.primaryStage = primaryStage;
+	        createTabs();
+	        createHomeInterface();
+	    }
     
 
 
