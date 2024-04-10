@@ -13,8 +13,9 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 
 public class PatientHealthRecord extends GridPane {
-
-    public PatientHealthRecord() {
+	private Patient patient;
+    public PatientHealthRecord(Patient patient) {
+    	this.patient = patient;
         createRegistrationFormPane();
     }
 

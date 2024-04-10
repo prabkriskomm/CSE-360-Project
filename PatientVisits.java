@@ -16,8 +16,10 @@ import java.util.List;
 
 class PatientVisitsTab extends BorderPane {
     private List<Visit> visits = new ArrayList<>();
+    private Patient patient;
 
-    public PatientVisitsTab() {
+    public PatientVisitsTab(Patient patient) {
+    	this.patient = patient;
         createVisitTable();
     }
 

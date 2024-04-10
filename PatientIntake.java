@@ -12,7 +12,9 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class PatientIntake extends BorderPane {
-    public PatientIntake() {
+	private Patient patient;
+    public PatientIntake(Patient patient) {
+    	this.patient = patient;
         // MenuBar and Menus
         MenuBar menuBar = new MenuBar();
 //        Menu scheduleMenu = new Menu("Schedule");

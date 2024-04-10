@@ -14,7 +14,12 @@ import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 
 public class SignUpPage extends Application {
-
+	private Patient patient;
+	
+	public SignUpPage() {
+		Patient patient = new Patient();
+		this.patient = patient;
+	}
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Sign Up - MEDIATE");
@@ -63,13 +68,13 @@ public class SignUpPage extends Application {
             
             if(password.equals(confirmPassword)) {
                 // Assuming Patient class extends User or has similar attributes
-                Patient patient1 = new Patient(insuranceInfo, insuranceInfo); // If Patient constructor takes parameters, pass them here
-                patient1.setFirstName(firstName);
-                patient1.setLastName(lastName);
-                patient1.setEmail(email);
-                patient1.setPassword(password);
-                patient1.setphoneNumber(phoneNumber); // Assuming there is a setPhoneNumber method
-                patient1.setinsuranceInfo(insuranceInfo); // Assuming there is a setInsuranceInfo method
+//                Patient patient1 = new Patient(insuranceInfo, insuranceInfo); // If Patient constructor takes parameters, pass them here
+//                patient1.setFirstName(firstName);
+//                patient1.setLastName(lastName);
+//                patient1.setEmail(email);
+//                patient1.setPassword(password);
+//                patient1.setphoneNumber(phoneNumber); // Assuming there is a setPhoneNumber method
+//                patient1.setinsuranceInfo(insuranceInfo); // Assuming there is a setInsuranceInfo method
 
                 //UserStorage.addUser(patient1); // Assumes UserStorage can handle Patient objects
 
@@ -84,7 +89,7 @@ public class SignUpPage extends Application {
         // Back to login page button
         Button backButton = new Button("Back to Login");
         backButton.setOnAction(e -> {
-            WelcomeAndLoginPage welcomePage = new WelcomeAndLoginPage();
+            WelcomeAndLoginPage welcomePage = new WelcomeAndLoginPage(patient);
             welcomePage.start(new Stage());
         });
 

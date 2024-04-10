@@ -1,5 +1,6 @@
 package application;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -30,9 +31,11 @@ public class PatientHomeTab extends BorderPane {
     private VBox messageDisplayArea;
 	private TabPane tabs;
 	private Stage primaryStage;
+	private Patient patient;
 
-	 public PatientHomeTab(Stage primaryStage) {
+	 public PatientHomeTab(Stage primaryStage, Patient patient) {
 	        this.primaryStage = primaryStage;
+	        this.patient = patient;
 	        createTabs();
 	        createHomeInterface();
 	    }
@@ -41,17 +44,39 @@ public class PatientHomeTab extends BorderPane {
 
     private void createTabs() {
     	tabs = new TabPane();
-    	
 
         Tab homeTab = new Tab("Home", createHomeInterface());
-        Tab healthRecordTab = new Tab("Health Record", new PatientHealthRecord());
+        homeTab.setClosable(false);
+        Tab healthRecordTab = new Tab("Health Record", new PatientHealthRecord(patient));
+        healthRecordTab.setClosable(false);
         Tab messagesTab = new Tab("Messages", createMessagingInterface());
-        Tab visitsTab = new Tab("Visits", new PatientVisitsTab());
+        messagesTab.setClosable(false);
+        Tab visitsTab = new Tab("Visits", new PatientVisitsTab(patient));
+        visitsTab.setClosable(false);
 
         tabs.getTabs().addAll(homeTab, healthRecordTab, messagesTab, visitsTab);
         tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-        setCenter(tabs);
+        Button logoutButton = new Button("Logout");
+        logoutButton.setOnAction(e -> {
+            Platform.runLater(() -> {
+                WelcomeAndLoginPage welcomePage = new WelcomeAndLoginPage(patient);
+                welcomePage.start(primaryStage);
+            });
+        });
+
+        Label mediateLabel = new Label("MEDIATE");
+        mediateLabel.setFont(new Font("Arial", 25));
+        mediateLabel.setStyle("-fx-font-weight: bold;");
+
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().addAll(tabs, logoutButton, mediateLabel);
+        StackPane.setAlignment(logoutButton, Pos.TOP_RIGHT);
+        StackPane.setAlignment(mediateLabel, Pos.TOP_RIGHT);
+        StackPane.setMargin(logoutButton, new Insets(3, 130, 0, 0));
+        StackPane.setMargin(mediateLabel, new Insets(1, 10, 0, 0));
+
+        this.setCenter(stackPane);
     }
 
     private BorderPane createHomeInterface() {
@@ -63,9 +88,6 @@ public class PatientHomeTab extends BorderPane {
             tabs.getTabs().add(editProfileTab);
             tabs.getSelectionModel().select(editProfileTab);
         });
-       
-        
-
 
         BorderPane topLayout = new BorderPane();
         topLayout.setRight(initialsButton);

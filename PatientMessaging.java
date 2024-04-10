@@ -13,7 +13,13 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 public class PatientMessaging extends Application {
-
+	private Patient patient;
+	
+	public PatientMessaging() {} //default constructor
+	
+	public PatientMessaging(Patient patient) {
+		this.patient = patient;
+	}
     @Override
     public void start(Stage primaryStage) {
         try {

@@ -8,8 +8,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 
 public class Diagnosis extends GridPane {
-
-    public Diagnosis() {
+	private Patient patient;
+	
+    public Diagnosis(Patient patient) {
+    	this.patient = patient;
         createRegistrationFormPane();
     }
 

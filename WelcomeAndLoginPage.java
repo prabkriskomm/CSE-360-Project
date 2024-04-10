@@ -1,10 +1,11 @@
 package application;
-//team 9 is amazing
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -15,19 +16,22 @@ import javafx.stage.Stage;
 
 public class WelcomeAndLoginPage extends Application {
 
-	private Stage primaryStage;
+    private Stage primaryStage;
     private LoginController loginController;
-    private StaffHomeTab staffHomeTab;
+    private Patient patient;
+    
+    public WelcomeAndLoginPage() {}
+    public WelcomeAndLoginPage(Patient patient) {
+    	this.patient = patient;
+    }
 
+    @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Welcome to MEDIATE");
 
-        // Initialize the StaffHomeTab
-        staffHomeTab = new StaffHomeTab();
-
-        // Initialize the LoginController with StaffHomeTab instance
-        loginController = new LoginController(primaryStage, staffHomeTab);
+        // Initialize the LoginController
+        loginController = new LoginController(primaryStage, patient);
 
         // Header
         Text headerText = new Text("MEDIATE");
@@ -66,17 +70,16 @@ public class WelcomeAndLoginPage extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }
 
 class LoginController {
 
     private Stage primaryStage;
-    private StaffHomeTab staffHomeTab;
+    private Patient patient;
 
-    public LoginController(Stage primaryStage, StaffHomeTab staffHomeTab) {
+    public LoginController(Stage primaryStage, Patient patient) {
         this.primaryStage = primaryStage;
-        this.staffHomeTab = staffHomeTab;
+        this.patient = patient;
     }
 
     public void showEmployeeLoginPage() {
@@ -110,7 +113,7 @@ class LoginController {
         // Back button
         Button backButton = new Button("<- Back");
         backButton.setOnAction(e -> {
-            WelcomeAndLoginPage welcomePage = new WelcomeAndLoginPage();
+            WelcomeAndLoginPage welcomePage = new WelcomeAndLoginPage(patient);
             welcomePage.start(primaryStage);
         });
 
@@ -134,12 +137,6 @@ class LoginController {
 
         primaryStage.setScene(loginScene);
         primaryStage.show();
-        
-        loginButton.setOnAction(e -> {
-            primaryStage.setTitle("Mediate - Staff Home");
-            primaryStage.setScene(new Scene(staffHomeTab, 800, 600));
-            primaryStage.show();
-        });
     }
 
     public void showPatientLoginPage() {
@@ -169,11 +166,17 @@ class LoginController {
 
         // Login button
         Button loginButton = new Button("Login");
+        loginButton.setOnAction(e -> {
+            primaryStage.setTitle("Patient Home");
+            PatientHomeTab patientHomeTab = new PatientHomeTab(primaryStage, patient); // Create an instance of PatientHomeTab
+            primaryStage.setScene(new Scene(patientHomeTab, 800, 600)); // Set the scene to the patient home tab
+            primaryStage.show();
+        });
 
         // Back button
         Button backButton = new Button("<- Back");
         backButton.setOnAction(e -> {
-            WelcomeAndLoginPage welcomePage = new WelcomeAndLoginPage();
+            WelcomeAndLoginPage welcomePage = new WelcomeAndLoginPage(patient);
             welcomePage.start(primaryStage);
         });
 
@@ -185,25 +188,42 @@ class LoginController {
         Text welcomeBackText = new Text("Welcome back");
         welcomeBackText.setFont(Font.font(25));
 
+        // Sign up hyperlink
+        Hyperlink signUpLink = new Hyperlink("Sign up here");
+        signUpLink.setOnAction(e -> {
+        // Assuming you have a method showSignUpPage() that displays the sign-up page
+        showSignUpPage();
+    });
+
+        // New to Mediate? text with hyperlink
+        Text newToText = new Text("New to Mediate? ");
+        HBox signUpBox = new HBox(newToText, signUpLink);
+        signUpBox.setAlignment(Pos.CENTER);
+
+
         // Layout for login page
         VBox loginLayout = new VBox(20);
         loginLayout.setAlignment(Pos.CENTER);
         loginLayout.setPadding(new Insets(50));
 
-        loginLayout.getChildren().addAll(welcomeBackText, headerText, nameLayout, passwordField, bottomLayout);
+        loginLayout.getChildren().addAll(welcomeBackText, headerText, nameLayout, passwordField, bottomLayout, signUpBox);
+
+//    // Method to display the sign-up page
+//    public void showSignUpPage() {
+//    SignUpPage signUpPage = new SignUpPage();
+//    signUpPage.start(primaryStage);
+//}
 
         // Scene for login page
         Scene loginScene = new Scene(loginLayout, 400, 300);
 
         primaryStage.setScene(loginScene);
         primaryStage.show();
-
-        loginButton.setOnAction(e -> {
-            primaryStage.setTitle("Patient Home");
-            PatientHomeTab patientHomeTab = new PatientHomeTab(); // Create an instance of PatientHomeTab
-            primaryStage.setScene(new Scene(patientHomeTab, 800, 600)); // Set the scene to the patient home tab
-            primaryStage.show();
-        });
     }
 
+	private void showSignUpPage() {
+		// TODO Auto-generated method stub
+		SignUpPage signUpPage = new SignUpPage();
+	    signUpPage.start(primaryStage);
+	}
 }

@@ -8,6 +8,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class ChangeContactInfo {
+	private Patient patient;
+	
+	public ChangeContactInfo(Patient patient) {
+		this.patient = patient;
+	}
 
     public static Tab createEditProfileTab() {
         Tab editProfileTab = new Tab("Edit Profile");

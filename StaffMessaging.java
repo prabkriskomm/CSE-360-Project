@@ -17,8 +17,10 @@ import java.io.IOException;
 public class StaffMessaging extends BorderPane {
 	private String searchedName;
     private VBox messageDisplayArea;
+    private Patient patient;
 
-    public StaffMessaging() {
+    public StaffMessaging(Patient patient) {
+    	this.patient = patient;
         BorderPane messageLayout = messageSys();
 
         Scene scene = new Scene(messageLayout, 800, 600);
@@ -149,5 +151,4 @@ public class StaffMessaging extends BorderPane {
         }
     }
 }
-
 

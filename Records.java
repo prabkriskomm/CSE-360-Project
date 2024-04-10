@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
 public class Records extends GridPane {
+	private Patient patient;
 
     private TextField patientNameField;
     private TextField heightField;
@@ -22,7 +23,8 @@ public class Records extends GridPane {
     private TextArea prescriptionsArea;
     private TextArea insuranceArea;
 
-    public Records() {
+    public Records(Patient patient) {
+    	this.patient = patient;
         setupUI();
     }
 
