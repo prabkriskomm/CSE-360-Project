@@ -2,6 +2,7 @@ package application;
 //team 9 is amazing
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -23,7 +24,7 @@ public class Diagnosis extends GridPane {
 
         // Add UI controls
         TextField nameField = new TextField();
-        nameField.setPromptText("Patient Name");
+        nameField.setText(patient.getFirstName());
 
         TextField physicianField = new TextField();
         physicianField.setPromptText("Primary Physician");
@@ -49,6 +50,23 @@ public class Diagnosis extends GridPane {
 
         TextArea prescriptionArea = new TextArea();
         prescriptionArea.setPromptText("Enter prescription details...");
+        
+        Button saveButton = new Button("Save");
+        
+        saveButton.setOnAction(event -> {
+            // Get the text from the text areas
+        	Visit visit = new Visit();
+            visit.setDiagnosis(diagnosisArea.getText());
+            visit.setCourseOfAction(courseOfActionArea.getText());
+            visit.setPrescription(prescriptionArea.getText());
+            patient.addVisit(visit);
+
+
+            // Clear the text areas
+            diagnosisArea.clear();
+            courseOfActionArea.clear();
+            prescriptionArea.clear();
+        });
 
         // Add controls to the grid
         this.add(infoBox, 0, 0, 2, 1); // Span two columns for full width
@@ -57,6 +75,7 @@ public class Diagnosis extends GridPane {
         this.add(diagnosisArea, 0, 1);
         this.add(courseOfActionArea, 1, 1);
         this.add(prescriptionArea, 0, 2, 2, 1); // Span two columns for full width
+        this.add(saveButton, 1, 3); // Add the "Save" button
 
         // Set column constraints to make the second column grow with the form
         ColumnConstraints col1 = new ColumnConstraints();
