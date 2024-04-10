@@ -48,7 +48,7 @@ public class SignUpPage extends Application {
         phoneNumberField.setPromptText("Phone Number");
         
         TextField insuranceInfoField = new TextField();
-        insuranceInfoField.setPromptText("Insurance Info");
+        insuranceInfoField.setPromptText("Insurance Information");
         
         
 
@@ -67,18 +67,12 @@ public class SignUpPage extends Application {
             String insuranceInfo = insuranceInfoField.getText();
             
             if(password.equals(confirmPassword)) {
-                // Assuming Patient class extends User or has similar attributes
-//                Patient patient1 = new Patient(insuranceInfo, insuranceInfo); // If Patient constructor takes parameters, pass them here
-//                patient1.setFirstName(firstName);
-//                patient1.setLastName(lastName);
-//                patient1.setEmail(email);
-//                patient1.setPassword(password);
-//                patient1.setphoneNumber(phoneNumber); // Assuming there is a setPhoneNumber method
-//                patient1.setinsuranceInfo(insuranceInfo); // Assuming there is a setInsuranceInfo method
-
-                //UserStorage.addUser(patient1); // Assumes UserStorage can handle Patient objects
-
-                // Switch to login page, show success message, etc.
+            	patient.setFirstName(firstName);
+            	patient.setLastName(lastName);
+            	patient.setEmail(email);
+            	patient.setPhoneNumber(phoneNumber);
+            	patient.setInsurance(insuranceInfo);
+            	//I would add a confirmation message
             } else {
                 errorMessage.setText("Error: Passwords do not match.");
                 errorMessage.setFill(Color.RED); // Set the text color to red for errors
@@ -95,7 +89,7 @@ public class SignUpPage extends Application {
 
         // Layout for the sign up form
         VBox formLayout = new VBox(10);
-        formLayout.getChildren().addAll(firstNameField, lastNameField, emailField, passwordField, confirmPasswordField, errorMessage, signUpButton, backButton);
+        formLayout.getChildren().addAll(firstNameField, lastNameField, emailField, phoneNumberField, insuranceInfoField, passwordField, confirmPasswordField, errorMessage, signUpButton, backButton);
         formLayout.setAlignment(Pos.CENTER);
 
         // Overall layout
