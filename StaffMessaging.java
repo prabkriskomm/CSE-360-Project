@@ -26,11 +26,9 @@ public class StaffMessaging extends BorderPane {
     }
 
     private BorderPane messageSys() {
-    	
         messageDisplayArea = new VBox(5);
         messageDisplayArea.setPadding(new Insets(10));
         messageDisplayArea.setFillWidth(true);
-	messageDisplayArea.setStyle("-fx-background-coler: #D3D3D3;");
 
         ScrollPane scrollPane = new ScrollPane(messageDisplayArea);
         scrollPane.setFitToWidth(true);
@@ -39,24 +37,25 @@ public class StaffMessaging extends BorderPane {
         TextArea textArea = new TextArea();
         textArea.setPromptText("Type your message here");
 
-        
         Button sendButton = new Button("Send");
         sendButton.setMaxWidth(Double.MAX_VALUE);
         sendButton.setOnAction(event -> {
+
+
             String message = textArea.getText();
             if (!message.isEmpty()) {
+                // Append the message to the chat history file
                 File file = new File("chat_history.txt");
-                //writing to file
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-                	// adding the message to the chat log file
+                    // Get the searched name from the search bar
+                    //String searchedName = searchBar.getText();
+                    // Append the message to the file
                     Label messageLabel = new Label(message);
                     messageLabel.setMaxWidth(Double.MAX_VALUE);
                     messageLabel.setAlignment(Pos.TOP_RIGHT); 
                     messageLabel.setStyle("-fx-background-color: lightgray; -fx-padding: 5;");
-                    //show message on screen
                     messageDisplayArea.getChildren().add(messageLabel); 
                     textArea.clear();
-                    //formatting the message for the file 
                     String formattedMessage = "Doctor to " + searchedName + ": " + message;
                     writer.write(formattedMessage);
                     writer.newLine();
@@ -69,22 +68,26 @@ public class StaffMessaging extends BorderPane {
             }
         });
         
-        //search bar implementation
         TextField searchBar = new TextField();
         searchBar.setPromptText("Search...");
+        
         searchBar.textProperty().addListener((observable, oldValue, searchBarName) -> {
+            // have to get information from a file with all Patient info 
+        	//Chat names = patient names find the chat
             System.out.println("Searching for: " + searchBarName);
+            
+            //instead of patientClass.get we could read from the the file to find a match 
         });
        
        Button searchButton = new Button("");
        searchButton.setStyle("-fx-background-color: #A9A9A9; -fx-text-fill: white; -fx-border-color: black; -fx-border-width: .25px;");
        searchButton.setOnAction(event -> {
-    	   //getting the patient name that was searched
+    	   //String currentPatientName = searchedName;
     	   searchedName = searchBar.getText();
-    	   //clearing before displaying the messages of the specific searched patient
     	   messageDisplayArea.getChildren().clear();
     	   loadMessages(searchedName);
-   
+    	   //need to find a way to transfer name variable so it sends to the save file
+    	   //searchBar.clear();
        });
 
 
@@ -95,15 +98,12 @@ public class StaffMessaging extends BorderPane {
             textArea.clear();
         });
         
-        //display formatting
-        //left pannel 
         HBox searchBarButton = new HBox();
         searchBarButton.getChildren().addAll(searchBar, searchButton);
-        
+
         VBox search = new VBox(10);
         search.getChildren().addAll(searchBarButton);
 
-        //Bottom Pannel
         VBox buttonBox = new VBox(10);
         buttonBox.getChildren().addAll(sendButton, endChatButton);
         VBox.setVgrow(sendButton, Priority.ALWAYS);
@@ -114,9 +114,7 @@ public class StaffMessaging extends BorderPane {
         textBox.getChildren().addAll(textArea, buttonBox);
         textBox.setPadding(new Insets(10));
 
-        //whole scene
         BorderPane messageLayout = new BorderPane();
-        messageLayout.setStyle("-fx-background-color: #D3D3D3;");
         messageLayout.setLeft(search);
         messageLayout.setCenter(scrollPane);
         messageLayout.setBottom(textBox);
@@ -132,11 +130,12 @@ public class StaffMessaging extends BorderPane {
 	            String line;
 	            boolean foundHistory = false;
                 while ((line = reader.readLine()) != null) {
-                    // looks for messages on both side to or from the specific Patient, 
-                    if (line.startsWith("Doctor to " + currentPatientName + ":") || line.startsWith(currentPatientName + ":")) {
+                    // Check if the message is for the current patient
+                    if (line.contains(currentPatientName)) {
                         foundHistory = true;
-                        // gets the messages and puts them in label to display on the screen
-                        Label messageLabel = new Label(line);
+                        // Extract the message part without "Doctor to {patientName}: "
+                        String message = line.substring(line.indexOf( "Doctor to " +currentPatientName + ":"));
+                        Label messageLabel = new Label(message);
                         messageLabel.setMaxWidth(Double.MAX_VALUE);
                         messageLabel.setAlignment(Pos.TOP_LEFT);
                         messageDisplayArea.getChildren().add(messageLabel);
@@ -149,5 +148,4 @@ public class StaffMessaging extends BorderPane {
         }
     }
 }
-
 

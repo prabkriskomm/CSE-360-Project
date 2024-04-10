@@ -24,7 +24,7 @@ public class WelcomeAndLoginPage extends Application {
         primaryStage.setTitle("Welcome to MEDIATE");
 
         // Initialize the StaffHomeTab
-        staffHomeTab = new StaffHomeTab();
+        staffHomeTab = new StaffHomeTab(primaryStage);
 
         // Initialize the LoginController with StaffHomeTab instance
         loginController = new LoginController(primaryStage, staffHomeTab);
@@ -200,7 +200,7 @@ class LoginController {
 
         loginButton.setOnAction(e -> {
             primaryStage.setTitle("Patient Home");
-            PatientHomeTab patientHomeTab = new PatientHomeTab(); // Create an instance of PatientHomeTab
+            PatientHomeTab patientHomeTab = new PatientHomeTab(primaryStage); // Create an instance of PatientHomeTab
             primaryStage.setScene(new Scene(patientHomeTab, 800, 600)); // Set the scene to the patient home tab
             primaryStage.show();
         });
