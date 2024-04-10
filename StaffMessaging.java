@@ -6,12 +6,16 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class StaffMessaging extends BorderPane {
+	private String searchedName;
     private VBox messageDisplayArea;
 
     public StaffMessaging() {
@@ -36,48 +40,69 @@ public class StaffMessaging extends BorderPane {
         Button sendButton = new Button("Send");
         sendButton.setMaxWidth(Double.MAX_VALUE);
         sendButton.setOnAction(event -> {
+
+
             String message = textArea.getText();
             if (!message.isEmpty()) {
-                Label messageLabel = new Label(message);
-                messageLabel.setMaxWidth(Double.MAX_VALUE);
-                messageLabel.setAlignment(Pos.TOP_RIGHT);
-                messageLabel.setStyle("-fx-background-color: #f0f0f0; -fx-padding: 10;");
-                messageDisplayArea.getChildren().add(messageLabel);
-                textArea.clear();
-                scrollPane.setVvalue(scrollPane.getVmax());
-            }
-        });
-
-        Button endChatButton = new Button("End Chat");
-        endChatButton.setOnAction(event -> {
-            File file = new File("chat_history.txt");
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                for (Node message : messageDisplayArea.getChildren()) {
-                    if (message instanceof Label) {
-                        Label messageLabel = (Label) message;
-                        String formattedMessage = "Doctor: " + messageLabel.getText();
-                        writer.write(formattedMessage);
-                        writer.newLine();
-                    }
+                // Append the message to the chat history file
+                File file = new File("chat_history.txt");
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                    // Get the searched name from the search bar
+                    //String searchedName = searchBar.getText();
+                    // Append the message to the file
+                    Label messageLabel = new Label(message);
+                    messageLabel.setMaxWidth(Double.MAX_VALUE);
+                    messageLabel.setAlignment(Pos.TOP_RIGHT); 
+                    messageLabel.setStyle("-fx-background-color: lightgray; -fx-padding: 5;");
+                    messageDisplayArea.getChildren().add(messageLabel); 
+                    textArea.clear();
+                    String formattedMessage = "Doctor to " + searchedName + ": " + message;
+                    writer.write(formattedMessage);
+                    writer.newLine();
+                    System.out.println("Message sent and saved to chat history.");
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                System.out.println("Chat saved to " + file.getAbsolutePath());
-            } catch (IOException e) {
-                e.printStackTrace();
+                // Clear the text area after sending the message
+                textArea.clear();
             }
-
-            textArea.clear();
-            messageDisplayArea.getChildren().clear();
         });
-
+        
         TextField searchBar = new TextField();
         searchBar.setPromptText("Search...");
-        searchBar.textProperty().addListener((observable, oldValue, patientName) -> {
-            // Logic to search for patient chats
-            System.out.println("Searching for: " + patientName);
+        
+        searchBar.textProperty().addListener((observable, oldValue, searchBarName) -> {
+            // have to get information from a file with all Patient info 
+        	//Chat names = patient names find the chat
+            System.out.println("Searching for: " + searchBarName);
+            
+            //instead of patientClass.get we could read from the the file to find a match 
         });
+       
+       Button searchButton = new Button("");
+       searchButton.setStyle("-fx-background-color: #A9A9A9; -fx-text-fill: white; -fx-border-color: black; -fx-border-width: .25px;");
+       searchButton.setOnAction(event -> {
+    	   //String currentPatientName = searchedName;
+    	   searchedName = searchBar.getText();
+    	   messageDisplayArea.getChildren().clear();
+    	   loadMessages(searchedName);
+    	   //need to find a way to transfer name variable so it sends to the save file
+    	   //searchBar.clear();
+       });
+
+
+        // Create End Chat button
+        Button endChatButton = new Button("End Chat");
+        endChatButton.setOnAction(event -> {
+            // Clear text area after saving the message
+            textArea.clear();
+        });
+        
+        HBox searchBarButton = new HBox();
+        searchBarButton.getChildren().addAll(searchBar, searchButton);
 
         VBox search = new VBox(10);
-        search.getChildren().addAll(searchBar);
+        search.getChildren().addAll(searchBarButton);
 
         VBox buttonBox = new VBox(10);
         buttonBox.getChildren().addAll(sendButton, endChatButton);
@@ -97,5 +122,31 @@ public class StaffMessaging extends BorderPane {
 
         return messageLayout;
     }
+	private void loadMessages(String currentPatientName) {
+		messageDisplayArea.getChildren().clear();
+	    File file = new File("chat_history.txt");
+	    if (file.exists()) {
+	        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+	            String line;
+	            boolean foundHistory = false;
+                while ((line = reader.readLine()) != null) {
+                    // Check if the message is for the current patient
+                    if (line.contains(currentPatientName)) {
+                        foundHistory = true;
+                        // Extract the message part without "Doctor to {patientName}: "
+                        String message = line.substring(line.indexOf( "Doctor to " +currentPatientName + ":"));
+                        Label messageLabel = new Label(message);
+                        messageLabel.setMaxWidth(Double.MAX_VALUE);
+                        messageLabel.setAlignment(Pos.TOP_LEFT);
+                        messageDisplayArea.getChildren().add(messageLabel);
+                    }
+                }
 
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
+
+
