@@ -30,6 +30,7 @@ public class StaffMessaging extends BorderPane {
         messageDisplayArea = new VBox(5);
         messageDisplayArea.setPadding(new Insets(10));
         messageDisplayArea.setFillWidth(true);
+	messageDisplayArea.setStyle("-fx-background-coler: #D3D3D3;");
 
         ScrollPane scrollPane = new ScrollPane(messageDisplayArea);
         scrollPane.setFitToWidth(true);
