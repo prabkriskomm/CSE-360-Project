@@ -109,6 +109,12 @@ class LoginController {
 
         // Login button
         Button loginButton = new Button("Login");
+        loginButton.setOnAction(e -> {
+            primaryStage.setTitle("Staff Home");
+            StaffHomeTab staffHomeTab = new StaffHomeTab(primaryStage, patient); // Create an instance of PatientHomeTab
+            primaryStage.setScene(new Scene(staffHomeTab, 800, 600)); // Set the scene to the patient home tab
+            primaryStage.show();
+        });
 
         // Back button
         Button backButton = new Button("<- Back");
