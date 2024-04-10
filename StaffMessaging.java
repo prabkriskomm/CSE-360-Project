@@ -131,11 +131,11 @@ public class StaffMessaging extends BorderPane {
 	            boolean foundHistory = false;
                 while ((line = reader.readLine()) != null) {
                     // Check if the message is for the current patient
-                    if (line.contains(currentPatientName)) {
+                    if (line.startsWith("Doctor to " + currentPatientName + ":") || line.startsWith(currentPatientName + ":")) {
                         foundHistory = true;
                         // Extract the message part without "Doctor to {patientName}: "
-                        String message = line.substring(line.indexOf( "Doctor to " +currentPatientName + ":"));
-                        Label messageLabel = new Label(message);
+                        //String message = line.substring(line.indexOf( ("Doctor to " + currentPatientName + ":"));
+                        Label messageLabel = new Label(line);
                         messageLabel.setMaxWidth(Double.MAX_VALUE);
                         messageLabel.setAlignment(Pos.TOP_LEFT);
                         messageDisplayArea.getChildren().add(messageLabel);
