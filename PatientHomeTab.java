@@ -12,26 +12,32 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class PatientHomeTab extends BorderPane {
-
+	private String patientName;
     private VBox messageDisplayArea;
 	private TabPane tabs;
+	
 
     public PatientHomeTab() {
         createTabs();
     }
+    
+
 
     private void createTabs() {
     	tabs = new TabPane();
     	
-        //TabPane tabs = new TabPane();
 
         Tab homeTab = new Tab("Home", createHomeInterface());
         Tab healthRecordTab = new Tab("Health Record", new PatientHealthRecord());
@@ -45,10 +51,6 @@ public class PatientHomeTab extends BorderPane {
     }
 
     private BorderPane createHomeInterface() {
-    	
-    	
-      
-    	
         Button initialsButton = new Button("Edit Profile");
         initialsButton.setStyle("-fx-font-weight: bold;");
         
@@ -91,47 +93,50 @@ public class PatientHomeTab extends BorderPane {
         messageDisplayArea = new VBox(5);
         messageDisplayArea.setPadding(new Insets(10));
         messageDisplayArea.setFillWidth(true);
+        messageDisplayArea.setStyle("-fx-background-coler: #D3D3D3;");
 
         ScrollPane scrollPane = new ScrollPane(messageDisplayArea);
         scrollPane.setFitToWidth(true);
         scrollPane.setVvalue(1.0);
+        //get the patient name from the log in page
+        patientName = "Kaitlyn";
+        loadChatHistory(patientName);
 
         TextArea messageArea = new TextArea();
         messageArea.setPromptText("Type your message here");
 
+        
         Button sendButton = new Button("Send");
         sendButton.setMaxWidth(Double.MAX_VALUE);
         sendButton.setOnAction(event -> {
             String message = messageArea.getText();
             if (!message.isEmpty()) {
-                Label messageLabel = new Label(message);
-                messageLabel.setMaxWidth(Double.MAX_VALUE);
-                messageLabel.setAlignment(Pos.TOP_RIGHT);
-                messageLabel.setStyle("-fx-background-color: lightgray; -fx-padding: 5;");
-                messageDisplayArea.getChildren().add(messageLabel);
+                // Add message to chat log file
+                File file = new File("chat_history.txt");
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                    Label messageLabel = new Label(message);
+                    messageLabel.setMaxWidth(Double.MAX_VALUE);
+                    messageLabel.setAlignment(Pos.TOP_RIGHT); 
+                    messageLabel.setStyle("-fx-background-color: lightgray; -fx-padding: 5;");
+                    messageDisplayArea.getChildren().add(messageLabel); 
+                    messageArea.clear();
+                    //formatting messages in the log from the patient 
+                    String formattedMessage = patientName + ": " + message;
+                    writer.write(formattedMessage);
+                    writer.newLine();
+                    System.out.println("Message sent and saved to chat history.");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // Clear the text area after sending the message
                 messageArea.clear();
-                scrollPane.setVvalue(scrollPane.getVmax());
             }
         });
 
         Button endChatButton = new Button("End Chat");
         endChatButton.setOnAction(event -> {
-            File file = new File("chat_history.txt");
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                for (Node messageNode : messageDisplayArea.getChildren()) {
-                    if (messageNode instanceof Label) {
-                        Label messageLabel = (Label) messageNode;
-                        String formattedMessage = "Patient: " + messageLabel.getText();
-                        writer.write(formattedMessage);
-                        writer.newLine();
-                    }
-                }
-                System.out.println("Chat saved to " + file.getAbsolutePath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // Clear text area after saving the message
             messageArea.clear();
-            messageDisplayArea.getChildren().clear();
         });
 
         VBox buttonBox = new VBox(10, sendButton, endChatButton);
@@ -146,7 +151,30 @@ public class PatientHomeTab extends BorderPane {
         BorderPane messageLayout = new BorderPane();
         messageLayout.setCenter(scrollPane);
         messageLayout.setBottom(messageBox);
+        messageLayout.setStyle("-fx-background-color: #D3D3D3;");
 
         return messageLayout;
+    }
+    
+    private void loadChatHistory(String name) {
+        File file = new File("chat_history.txt");
+        if (file.exists()) {
+        	//read the file
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                //read the file till you get to an empty line
+                while ((line = reader.readLine()) != null) {
+                	//if theirs the patient name, either to or from pull the line and display it 
+                    if (line.startsWith("Doctor to " + name + ":") || line.startsWith(name + ":")) {
+                        Label messageLabel = new Label(line);
+                        messageLabel.setMaxWidth(Double.MAX_VALUE);
+                        messageLabel.setAlignment(Pos.TOP_LEFT);
+                        messageDisplayArea.getChildren().add(messageLabel);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
