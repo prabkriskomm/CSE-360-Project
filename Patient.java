@@ -18,6 +18,7 @@ public class Patient {
     private String patientId;
     private String firstName;
     private String lastName;
+    private String birthday;
     
     public void addVisit(Visit visit) {
     	visits.add(visit);
@@ -39,6 +40,14 @@ public class Patient {
 
     public void setAge(int age) {
         this.age = age;
+    }
+    
+    public void setBirthday(String birthday) {
+    	this.birthday = birthday;
+    }
+    
+    public String getBirthday() {
+    	return birthday;
     }
 
     // Getter and Setter methods for medicalHistory
