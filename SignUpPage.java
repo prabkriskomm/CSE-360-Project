@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -50,8 +51,10 @@ public class SignUpPage extends Application {
         TextField insuranceInfoField = new TextField();
         insuranceInfoField.setPromptText("Insurance Information");
         
-        
+        DatePicker datePicker = new DatePicker();
+        datePicker.setPromptText("Birthday");
 
+        
         // Error message text
         Text errorMessage = new Text();
 
@@ -65,6 +68,7 @@ public class SignUpPage extends Application {
             String confirmPassword = confirmPasswordField.getText();
             String phoneNumber = phoneNumberField.getText();
             String insuranceInfo = insuranceInfoField.getText();
+            String birthday = datePicker.getAccessibleText();
             
             if(password.equals(confirmPassword)) {
             	patient.setFirstName(firstName);
@@ -72,6 +76,7 @@ public class SignUpPage extends Application {
             	patient.setEmail(email);
             	patient.setPhoneNumber(phoneNumber);
             	patient.setInsurance(insuranceInfo);
+            	patient.setBirthday(birthday);
             	//I would add a confirmation message
             } else {
                 errorMessage.setText("Error: Passwords do not match.");
@@ -86,10 +91,10 @@ public class SignUpPage extends Application {
             WelcomeAndLoginPage welcomePage = new WelcomeAndLoginPage(patient);
             welcomePage.start(new Stage());
         });
-
+        
         // Layout for the sign up form
         VBox formLayout = new VBox(10);
-        formLayout.getChildren().addAll(firstNameField, lastNameField, emailField, phoneNumberField, insuranceInfoField, passwordField, confirmPasswordField, errorMessage, signUpButton, backButton);
+        formLayout.getChildren().addAll(firstNameField, lastNameField, emailField, phoneNumberField, insuranceInfoField, passwordField, confirmPasswordField, datePicker, errorMessage, signUpButton, backButton);
         formLayout.setAlignment(Pos.CENTER);
 
         // Overall layout
