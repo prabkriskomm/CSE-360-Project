@@ -24,7 +24,7 @@ public class Diagnosis extends GridPane {
 
         // Add UI controls
         TextField nameField = new TextField();
-        nameField.setText(patient.getFirstName());
+        nameField.setPromptText("Patient Name");
 
         TextField physicianField = new TextField();
         physicianField.setPromptText("Primary Physician");
