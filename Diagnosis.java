@@ -24,19 +24,27 @@ public class Diagnosis extends GridPane {
 
         // Add UI controls
         TextField nameField = new TextField();
-        nameField.setPromptText("Patient Name");
-
+        nameField.setPromptText("First Name");
+        
+        TextField lastName = new TextField();
+        lastName.setPromptText("Last Name");
+        
+        DatePicker birthday = new DatePicker();
+        birthday.setPromptText("Birthday");
+        
         TextField physicianField = new TextField();
         physicianField.setPromptText("Primary Physician");
-
+    
         DatePicker datePicker = new DatePicker();
         datePicker.setPromptText("Visit Date");
-
-        // Create an HBox to hold the name, physician, and date controls side by side
-        HBox infoBox = new HBox(10); // Adjust spacing as needed
-        infoBox.setAlignment(Pos.CENTER_LEFT);
-        infoBox.getChildren().addAll(nameField, new Region(), physicianField, new Region(), datePicker);
         
+        // Create an HBox to hold the name, birthday, physician, and date controls side by side
+        HBox infoBox = new HBox(10);
+        infoBox.setAlignment(Pos.CENTER_LEFT);
+        infoBox.getChildren().addAll(nameField, new Region(), lastName, new Region(), birthday, new Region(), physicianField, new Region(), datePicker);
+        
+
+        //adding in the 2 HBOX
         // Set HBox to evenly distribute space between nodes
         HBox.setHgrow(infoBox.getChildren().get(1), Priority.ALWAYS);
         HBox.setHgrow(infoBox.getChildren().get(3), Priority.ALWAYS);
@@ -60,6 +68,8 @@ public class Diagnosis extends GridPane {
             visit.setCourseOfAction(courseOfActionArea.getText());
             visit.setPrescription(prescriptionArea.getText());
             patient.addVisit(visit);
+            //patient.setDiagnosis(nameField.getText(), physicianField.getText(), /*datePicker.getText(),*/ diagnosisArea.getText(), courseOfActionArea.getText(), prescriptionArea.getText());
+
 
 
             // Clear the text areas
@@ -70,6 +80,7 @@ public class Diagnosis extends GridPane {
 
         // Add controls to the grid
         this.add(infoBox, 0, 0, 2, 1); // Span two columns for full width
+        //this.add(spacing, 0, 0, 2, 1); // Span two columns for full width
 
         // Add Diagnosis, Course of Action, and Prescription in separate rows
         this.add(diagnosisArea, 0, 1);
