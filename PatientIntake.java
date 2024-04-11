@@ -39,7 +39,8 @@ public class PatientIntake extends BorderPane {
         vitalsTitle.setAlignment(Pos.CENTER);
         GridPane.setConstraints(vitalsTitle, 0, 0, 2, 1, HPos.CENTER, VPos.CENTER);
         vitalsGrid.getChildren().add(vitalsTitle);
-        String[] labels = {"Age", "Weight", "Height", "Temperature", "BPM"};
+        String[] labels = {"Age", "Weight", "Height", "Temperature", "BPM"}; //change BPM to be called "Heart Rate (bpm)", add a DatePicker, make a node for each of these, get rid of for loop
+	    //add a save button, when you hit the save button it clears the fields, patient.setAge(age), patientField.clear();
         for (int i = 0; i < labels.length; i++) {
             Label label = new Label(labels[i]);
             label.setMinWidth(Region.USE_PREF_SIZE);
