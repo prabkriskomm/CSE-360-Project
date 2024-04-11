@@ -5,7 +5,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -51,12 +50,10 @@ public class SignUpPage extends Application {
         TextField insuranceInfoField = new TextField();
         insuranceInfoField.setPromptText("Insurance Information");
         
-        DatePicker datePicker = new DatePicker();
-        datePicker.setPromptText("Birthday");
-
         
+
         // Error message text
-        Text errorMessage = new Text();
+        Text messageText = new Text();
 
         // Sign Up button
         Button signUpButton = new Button("Sign Up");
@@ -68,19 +65,31 @@ public class SignUpPage extends Application {
             String confirmPassword = confirmPasswordField.getText();
             String phoneNumber = phoneNumberField.getText();
             String insuranceInfo = insuranceInfoField.getText();
-            String birthday = datePicker.getAccessibleText();
             
             if(password.equals(confirmPassword)) {
-            	patient.setFirstName(firstName);
-            	patient.setLastName(lastName);
-            	patient.setEmail(email);
-            	patient.setPhoneNumber(phoneNumber);
-            	patient.setInsurance(insuranceInfo);
-            	patient.setBirthday(birthday);
-            	//I would add a confirmation message
+                patient.setFirstName(firstName);
+                patient.setLastName(lastName);
+                patient.setEmail(email);
+                patient.setPhoneNumber(phoneNumber);
+                patient.setInsurance(insuranceInfo);
+                
+                // Display success message
+                messageText.setText("Sign-up Complete!");
+                messageText.setFill(Color.GREEN); 
+                
+                // Clear the fields after successful sign-up
+                firstNameField.setText("");
+                lastNameField.setText("");
+                emailField.setText("");
+                passwordField.setText("");
+                confirmPasswordField.setText("");
+                phoneNumberField.setText("");
+                insuranceInfoField.setText("");
+                
             } else {
-                errorMessage.setText("Error: Passwords do not match.");
-                errorMessage.setFill(Color.RED); // Set the text color to red for errors
+                // Display error message
+                messageText.setText("Error: Passwords do not match.");
+                messageText.setFill(Color.RED); // Set the text color to red for errors
             }
         });
 
@@ -90,11 +99,14 @@ public class SignUpPage extends Application {
         backButton.setOnAction(e -> {
             WelcomeAndLoginPage welcomePage = new WelcomeAndLoginPage(patient);
             welcomePage.start(new Stage());
+            
+            //close current sign up page
+            primaryStage.close();
         });
-        
+
         // Layout for the sign up form
         VBox formLayout = new VBox(10);
-        formLayout.getChildren().addAll(firstNameField, lastNameField, emailField, phoneNumberField, insuranceInfoField, passwordField, confirmPasswordField, datePicker, errorMessage, signUpButton, backButton);
+        formLayout.getChildren().addAll(firstNameField, lastNameField, emailField, phoneNumberField, insuranceInfoField, passwordField, confirmPasswordField, messageText, signUpButton, backButton);
         formLayout.setAlignment(Pos.CENTER);
 
         // Overall layout
