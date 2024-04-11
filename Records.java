@@ -2,6 +2,7 @@ package application;
 //team 9 is amazing
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -10,6 +11,7 @@ import javafx.scene.text.Font;
 
 public class Records extends GridPane {
 	private Patient patient;
+	private String searchedName;
 
     private TextField patientNameField;
     private TextField heightField;
@@ -42,11 +44,22 @@ public class Records extends GridPane {
         this.add(patientNameLabel, 0, 1);
         patientNameField = new TextField();
         this.add(patientNameField, 1, 1);
+        
+        Button search = new Button("Search");
+        this.add(search, 2, 1);
+        search.setOnAction(event -> {
+     	   //getting the patient name that was searched
+     	   searchedName = patientNameField.getText();
+     	   //clearing before displaying the messages of the specific searched patient
+     	   //Get messages loadMessages(searchedName);
+    
+        });
 
         Label heightLabel = new Label("Height:");
         this.add(heightLabel, 0, 2);
         heightField = new TextField();
         this.add(heightField, 1, 2);
+        //implement getting info using searchedName
 
         Label weightLabel = new Label("Weight:");
         this.add(weightLabel, 0, 3);
