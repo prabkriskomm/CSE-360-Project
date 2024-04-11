@@ -2,6 +2,11 @@ package application;
 //team 9 is amazing
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
@@ -41,19 +46,65 @@ public class PatientIntake extends BorderPane {
         vitalsGrid.getChildren().add(vitalsTitle);
         String[] labels = {"Age", "Weight", "Height", "Temperature", "BPM"}; //change BPM to be called "Heart Rate (bpm)", add a DatePicker, make a node for each of these, get rid of for loop
 	    //add a save button, when you hit the save button it clears the fields, patient.setAge(age), patientField.clear();
-        for (int i = 0; i < labels.length; i++) {
-            Label label = new Label(labels[i]);
-            label.setMinWidth(Region.USE_PREF_SIZE);
-            label.setAlignment(Pos.CENTER_RIGHT);
+        // Age
+        Label ageLabel = new Label("Age");
+        ageLabel.setMinWidth(Region.USE_PREF_SIZE);
+        ageLabel.setAlignment(Pos.CENTER_RIGHT);
+        TextField ageField = new TextField();
+        ageField.setPrefWidth(200);
+        GridPane.setConstraints(ageLabel, 0, 1);
+        GridPane.setConstraints(ageField, 1, 1);
+        vitalsGrid.getChildren().addAll(ageLabel, ageField);
 
-            TextField textField = new TextField();
-            textField.setPrefWidth(200); // Set a preferred width for text fields
+        // Weight
+        Label weightLabel = new Label("Weight");
+        weightLabel.setMinWidth(Region.USE_PREF_SIZE);
+        weightLabel.setAlignment(Pos.CENTER_RIGHT);
+        TextField weightField = new TextField();
+        weightField.setPrefWidth(200);
+        GridPane.setConstraints(weightLabel, 0, 2);
+        GridPane.setConstraints(weightField, 1, 2);
+        vitalsGrid.getChildren().addAll(weightLabel, weightField);
 
-            GridPane.setConstraints(label, 0, i + 1);
-            GridPane.setConstraints(textField, 1, i + 1);
+        // Height
+        Label heightLabel = new Label("Height");
+        heightLabel.setMinWidth(Region.USE_PREF_SIZE);
+        heightLabel.setAlignment(Pos.CENTER_RIGHT);
+        TextField heightField = new TextField();
+        heightField.setPrefWidth(200);
+        GridPane.setConstraints(heightLabel, 0, 3);
+        GridPane.setConstraints(heightField, 1, 3);
+        vitalsGrid.getChildren().addAll(heightLabel, heightField);
+        
+     // Temperature
+        Label tempLabel = new Label("Temperature");
+        tempLabel.setMinWidth(Region.USE_PREF_SIZE);
+        tempLabel.setAlignment(Pos.CENTER_RIGHT);
+        TextField tempField = new TextField();
+        tempField.setPrefWidth(200);
+        GridPane.setConstraints(tempLabel, 0, 4);
+        GridPane.setConstraints(tempField, 1, 4);
+        vitalsGrid.getChildren().addAll(tempLabel, tempField);
 
-            vitalsGrid.getChildren().addAll(label, textField);
-        }
+        // BPM
+        Label bpmLabel = new Label("Heart Rate (bpm)");
+        bpmLabel.setMinWidth(Region.USE_PREF_SIZE);
+        bpmLabel.setAlignment(Pos.CENTER_RIGHT);
+        TextField bpmField = new TextField();
+        bpmField.setPrefWidth(200);
+        GridPane.setConstraints(bpmLabel, 0, 5);
+        GridPane.setConstraints(bpmField, 1, 5);
+        vitalsGrid.getChildren().addAll(bpmLabel, bpmField);
+
+       // Date Picker
+        Label dateLabel = new Label("Date");
+        dateLabel.setMinWidth(Region.USE_PREF_SIZE);
+        dateLabel.setAlignment(Pos.CENTER_RIGHT);
+        DatePicker datePicker = new DatePicker();
+        datePicker.setPrefWidth(200);
+        GridPane.setConstraints(dateLabel, 0, 6);
+        GridPane.setConstraints(datePicker, 1, 6);
+        vitalsGrid.getChildren().addAll(dateLabel, datePicker);
 
         // Allergies section
         VBox allergiesBox = new VBox(10);
@@ -79,6 +130,43 @@ public class PatientIntake extends BorderPane {
         healthConcernsTitle.setMaxWidth(Double.MAX_VALUE);
         TextArea healthConcernsArea = new TextArea();
         healthConcernsBox.getChildren().addAll(healthConcernsTitle, healthConcernsArea);
+        
+        DatePicker datePicker1 = new DatePicker();
+        datePicker1.setPrefWidth(200);
+        GridPane.setConstraints(dateLabel, 0, 6);
+        GridPane.setConstraints(datePicker1, 1, 6);
+        vitalsGrid.getChildren().addAll(dateLabel, datePicker1);
+
+        // Save Button
+//        Button saveButton = new Button("Save");
+//        saveButton.setOnAction(event -> {
+//            String age = ageField.getText();
+//            String weight = weightField.getText();
+//            String height = heightField.getText();
+//            String temperature = tempField.getText();
+//            String bpm = bpmField.getText();
+//            LocalDate date = datePicker1.getValue();
+//
+//            if (date != null) {
+//                String fileName = String.format("%s-PI.txt", date.toString());
+//                try (FileWriter writer = new FileWriter(fileName)) {
+//                    writer.write("Age: " + age + "\n");
+//                    writer.write("Weight: " + weight + "\n");
+//                    writer.write("Height: " + height + "\n");
+//                    writer.write("Temperature: " + temperature + "\n");
+//                    writer.write("BPM: " + bpm + "\n");
+//                    writer.write("Date: " + date.toString() + "\n");
+//                    writer.close();
+//                    System.out.println("Data saved successfully.");
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    System.err.println("Error saving data to file.");
+//                }
+//            } else {
+//                System.err.println("Please select a date.");
+//            }
+//        });
+
 
         // Layout setup
         HBox contentBox = new HBox(20);
