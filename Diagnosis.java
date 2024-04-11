@@ -63,7 +63,7 @@ public class Diagnosis extends GridPane {
         
         saveButton.setOnAction(event -> {
             // Get the text from the text areas
-        	Visit visit = new Visit();
+        	Visit visit = new Visit(null, null, null);
             visit.setDiagnosis(diagnosisArea.getText());
             visit.setCourseOfAction(courseOfActionArea.getText());
             visit.setPrescription(prescriptionArea.getText());
