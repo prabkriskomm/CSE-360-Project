@@ -1,125 +1,92 @@
 package application;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Patient {
+public class Visit {
+    private String date;
+    private String diagnosis;
+    private String courseOfAction;
+    private String prescription;
+    private int BP;
+    private int HR;
+    private double temp;
+    private double height;
+    private double weight;
     
-    private List<Visit> visits = new ArrayList<>();
-    
-    //intake
-    private int age;
-    private String medicalHistory;
-
-    //from Sign Up page 
-    private String password;
-    private String email;
-    private String phoneNumber;
-    private String insurance;
-    private String patientId;
-    private String firstName;
-    private String lastName;
-    private String birthday;
-    
-    public void addVisit(Visit visit) {
-    	visits.add(visit);
-    }
-
-    // Getter and Setter methods for visits
-    public List<Visit> getVisits() {
-        return visits;
-    }
-
-    public void setVisits(List<Visit> visits) {
-        this.visits = visits;
-    }
-
-    // Getter and Setter methods for age
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
+    public String getPrescription() {
+    	return prescription;
     }
     
-    public void setBirthday(String birthday) {
-    	this.birthday = birthday;
+    public void setPrescription(String prescription) {
+    	this.prescription = prescription;
     }
-    
-    public String getBirthday() {
-    	return birthday;
-    }
-
-    // Getter and Setter methods for medicalHistory
-    public String getMedicalHistory() {
-        return medicalHistory;
+    // Getter and Setter methods for date
+    public String getDate() {
+        return date;
     }
 
-    public void setMedicalHistory(String medicalHistory) {
-        this.medicalHistory = medicalHistory;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    // Getter and Setter methods for password
-    public String getPassword() {
-        return password;
+    // Getter and Setter methods for diagnosis
+    public String getDiagnosis() {
+        return diagnosis;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
     }
 
-    // Getter and Setter methods for email
-    public String getEmail() {
-        return email;
+    // Getter and Setter methods for courseOfAction
+    public String getCourseOfAction() {
+        return courseOfAction;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCourseOfAction(String courseOfAction) {
+        this.courseOfAction = courseOfAction;
     }
 
-    // Getter and Setter methods for phoneNumber
-    public String getPhoneNumber() {
-        return phoneNumber;
+    // Getter and Setter methods for BP
+    public int getBP() {
+        return BP;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setBP(int BP) {
+        this.BP = BP;
     }
 
-    // Getter and Setter methods for insurance
-    public String getInsurance() {
-        return insurance;
+    // Getter and Setter methods for HR
+    public int getHR() {
+        return HR;
     }
 
-    public void setInsurance(String insurance) {
-        this.insurance = insurance;
+    public void setHR(int HR) {
+        this.HR = HR;
     }
 
-    // Getter and Setter methods for patientId
-    public String getPatientId() {
-        return patientId;
+    // Getter and Setter methods for temp
+    public double getTemp() {
+        return temp;
     }
 
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
+    public void setTemp(double temp) {
+        this.temp = temp;
     }
 
-    // Getter and Setter methods for firstName
-    public String getFirstName() {
-        return firstName;
+    // Getter and Setter methods for height
+    public double getHeight() {
+        return height;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setHeight(double height) {
+        this.height = height;
     }
 
-    // Getter and Setter methods for lastName
-    public String getLastName() {
-        return lastName;
+    // Getter and Setter methods for weight
+    public double getWeight() {
+        return weight;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 }
