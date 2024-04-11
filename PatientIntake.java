@@ -2,11 +2,6 @@ package application;
 //team 9 is amazing
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDate;
-
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
@@ -52,8 +47,8 @@ public class PatientIntake extends BorderPane {
         ageLabel.setAlignment(Pos.CENTER_RIGHT);
         TextField ageField = new TextField();
         ageField.setPrefWidth(200);
-        GridPane.setConstraints(ageLabel, 0, 1);
-        GridPane.setConstraints(ageField, 1, 1);
+        GridPane.setConstraints(ageLabel, 0, 2);
+        GridPane.setConstraints(ageField, 1, 2);
         vitalsGrid.getChildren().addAll(ageLabel, ageField);
 
         // Weight
@@ -62,8 +57,8 @@ public class PatientIntake extends BorderPane {
         weightLabel.setAlignment(Pos.CENTER_RIGHT);
         TextField weightField = new TextField();
         weightField.setPrefWidth(200);
-        GridPane.setConstraints(weightLabel, 0, 2);
-        GridPane.setConstraints(weightField, 1, 2);
+        GridPane.setConstraints(weightLabel, 0, 3);
+        GridPane.setConstraints(weightField, 1, 3);
         vitalsGrid.getChildren().addAll(weightLabel, weightField);
 
         // Height
@@ -72,8 +67,8 @@ public class PatientIntake extends BorderPane {
         heightLabel.setAlignment(Pos.CENTER_RIGHT);
         TextField heightField = new TextField();
         heightField.setPrefWidth(200);
-        GridPane.setConstraints(heightLabel, 0, 3);
-        GridPane.setConstraints(heightField, 1, 3);
+        GridPane.setConstraints(heightLabel, 0, 4);
+        GridPane.setConstraints(heightField, 1, 4);
         vitalsGrid.getChildren().addAll(heightLabel, heightField);
         
      // Temperature
@@ -82,8 +77,8 @@ public class PatientIntake extends BorderPane {
         tempLabel.setAlignment(Pos.CENTER_RIGHT);
         TextField tempField = new TextField();
         tempField.setPrefWidth(200);
-        GridPane.setConstraints(tempLabel, 0, 4);
-        GridPane.setConstraints(tempField, 1, 4);
+        GridPane.setConstraints(tempLabel, 0, 5);
+        GridPane.setConstraints(tempField, 1, 5);
         vitalsGrid.getChildren().addAll(tempLabel, tempField);
 
         // BPM
@@ -92,8 +87,8 @@ public class PatientIntake extends BorderPane {
         bpmLabel.setAlignment(Pos.CENTER_RIGHT);
         TextField bpmField = new TextField();
         bpmField.setPrefWidth(200);
-        GridPane.setConstraints(bpmLabel, 0, 5);
-        GridPane.setConstraints(bpmField, 1, 5);
+        GridPane.setConstraints(bpmLabel, 0, 6);
+        GridPane.setConstraints(bpmField, 1, 6);
         vitalsGrid.getChildren().addAll(bpmLabel, bpmField);
 
        // Date Picker
@@ -102,8 +97,8 @@ public class PatientIntake extends BorderPane {
         dateLabel.setAlignment(Pos.CENTER_RIGHT);
         DatePicker datePicker = new DatePicker();
         datePicker.setPrefWidth(200);
-        GridPane.setConstraints(dateLabel, 0, 6);
-        GridPane.setConstraints(datePicker, 1, 6);
+        GridPane.setConstraints(dateLabel, 0, 1);
+        GridPane.setConstraints(datePicker, 1, 1);
         vitalsGrid.getChildren().addAll(dateLabel, datePicker);
 
         // Allergies section
@@ -131,42 +126,7 @@ public class PatientIntake extends BorderPane {
         TextArea healthConcernsArea = new TextArea();
         healthConcernsBox.getChildren().addAll(healthConcernsTitle, healthConcernsArea);
         
-        DatePicker datePicker1 = new DatePicker();
-        datePicker1.setPrefWidth(200);
-        GridPane.setConstraints(dateLabel, 0, 6);
-        GridPane.setConstraints(datePicker1, 1, 6);
-        vitalsGrid.getChildren().addAll(dateLabel, datePicker1);
-
-        // Save Button
-//        Button saveButton = new Button("Save");
-//        saveButton.setOnAction(event -> {
-//            String age = ageField.getText();
-//            String weight = weightField.getText();
-//            String height = heightField.getText();
-//            String temperature = tempField.getText();
-//            String bpm = bpmField.getText();
-//            LocalDate date = datePicker1.getValue();
-//
-//            if (date != null) {
-//                String fileName = String.format("%s-PI.txt", date.toString());
-//                try (FileWriter writer = new FileWriter(fileName)) {
-//                    writer.write("Age: " + age + "\n");
-//                    writer.write("Weight: " + weight + "\n");
-//                    writer.write("Height: " + height + "\n");
-//                    writer.write("Temperature: " + temperature + "\n");
-//                    writer.write("BPM: " + bpm + "\n");
-//                    writer.write("Date: " + date.toString() + "\n");
-//                    writer.close();
-//                    System.out.println("Data saved successfully.");
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    System.err.println("Error saving data to file.");
-//                }
-//            } else {
-//                System.err.println("Please select a date.");
-//            }
-//        });
-
+        
 
         // Layout setup
         HBox contentBox = new HBox(20);
