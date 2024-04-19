@@ -63,14 +63,14 @@ public class SignUpPage extends Application {
             
             if(password.equals(confirmPassword)) {
                 // Assuming Patient class extends User or has similar attributes
-                Patient patient1 = new Patient(insuranceInfo, insuranceInfo); // If Patient constructor takes parameters, pass them here
+                /*Patient patient1 = new Patient(insuranceInfo, insuranceInfo); // If Patient constructor takes parameters, pass them here
                 patient1.setFirstName(firstName);
                 patient1.setLastName(lastName);
                 patient1.setEmail(email);
                 patient1.setPassword(password);
                 patient1.setphoneNumber(phoneNumber); // Assuming there is a setPhoneNumber method
                 patient1.setinsuranceInfo(insuranceInfo); // Assuming there is a setInsuranceInfo method
-
+*/
                 //UserStorage.addUser(patient1); // Assumes UserStorage can handle Patient objects
 
                 // Switch to login page, show success message, etc.
