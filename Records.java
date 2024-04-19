@@ -1,8 +1,13 @@
-
 package application;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
+//team 9 is amazing
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -41,6 +46,9 @@ public class Records extends GridPane {
         this.add(patientNameLabel, 0, 1);
         patientNameField = new TextField();
         this.add(patientNameField, 1, 1);
+        
+        
+
 
         Label heightLabel = new Label("Height:");
         this.add(heightLabel, 0, 2);
@@ -95,8 +103,57 @@ public class Records extends GridPane {
         insuranceArea.setPrefRowCount(5);
         insuranceArea.setWrapText(true);
         this.add(insuranceArea, 3, 4, 1, 3);
+        
+        Button search = new Button("Search");
+        this.add(search, 2, 1);
+        search.setOnAction(event->{
+        	//heightField.setText((loadPatientInfo(patientNameField.getText(), "height")));
+        	loadPatientInfo(patientNameField.getText(), "Height");
+        	loadPatientInfo(patientNameField.getText(), "Weight");
+        });
     }
-
+    void loadPatientInfo(String name, String label) {
+        File file = new File("Patient_Data.txt");
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                boolean foundInfo = false;
+                while ((line = reader.readLine()) != null) {
+                    // Check if the line contains the specific patient information
+                    if (line.startsWith(name +", " + label + ":")) {
+                        // Extract the value of the information
+                        String[] parts = line.split(": ");
+                        if (parts.length > 1) {
+                            String value = parts[1].trim();
+                            // Display the value in the appropriate field based on the label
+                            switch (label) {
+                                case "height:":
+                                    heightField.setText(value);
+                                    break;
+                                case "weight:":
+                                    weightField.setText(value);
+                                    break;
+                                case "Temperature:":
+                                    temperatureField.setText(value);
+                                    break;
+                                // Add cases for other fields if needed
+                            }
+                            foundInfo = true;
+                            break; // Stop searching once the information is found
+                        }
+                    }
+                }
+                // If the information was not found, display a message indicating it
+                if (!foundInfo) {
+                    // Handle the case when the information is not found
+                    System.out.println("Patient information not found.");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
     // Getters for retrieving text from fields
     public static void main(String[] args) {
         // You can add code here to test the Records class independently
