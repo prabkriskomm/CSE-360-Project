@@ -126,7 +126,7 @@ public class Visit {
         saveVisitData(); // Save visit data after setting weight
     }
 
-    private void saveVisitData() {
+    public void saveVisitData() {
         File file = new File("visit.txt");
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
             if (!file.exists()) {
@@ -155,7 +155,7 @@ public class Visit {
         }
     }
 
-    private void loadVisitData() {
+    public void loadVisitData() {
         try (BufferedReader br = new BufferedReader(new FileReader("visit.txt"))) {
             //String header = br.readLine(); // Read and discard the header
             String line;
