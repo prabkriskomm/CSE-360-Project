@@ -27,7 +27,7 @@ public class Records extends GridPane {
     private TextField immunizationsField;
     private TextArea prescriptionsArea;
     private TextArea insuranceArea;
-
+    String w = new String();
     public Records() {
         setupUI();
     }
@@ -46,8 +46,6 @@ public class Records extends GridPane {
         this.add(patientNameLabel, 0, 1);
         patientNameField = new TextField();
         this.add(patientNameField, 1, 1);
-        
-        
 
 
         Label heightLabel = new Label("Height:");
@@ -110,6 +108,7 @@ public class Records extends GridPane {
         	//heightField.setText((loadPatientInfo(patientNameField.getText(), "height")));
         	loadPatientInfo(patientNameField.getText(), "Height");
         	loadPatientInfo(patientNameField.getText(), "Weight");
+        	loadPatientInfo(patientNameField.getText(), "Temperature");
         });
     }
     void loadPatientInfo(String name, String label) {
@@ -120,23 +119,40 @@ public class Records extends GridPane {
                 boolean foundInfo = false;
                 while ((line = reader.readLine()) != null) {
                     // Check if the line contains the specific patient information
-                    if (line.startsWith(name +", " + label + ":")) {
+                    if (line.startsWith(name + ", " + label + ":")) {
                         // Extract the value of the information
                         String[] parts = line.split(": ");
-                        if (parts.length > 1) {
+                        if (parts.length >= 2) {
                             String value = parts[1].trim();
                             // Display the value in the appropriate field based on the label
                             switch (label) {
-                                case "height:":
+                            //intake stuff 
+                                case "Height":
                                     heightField.setText(value);
                                     break;
-                                case "weight:":
+                                case "Weight":
                                     weightField.setText(value);
                                     break;
-                                case "Temperature:":
+                                case "Temperature":
                                     temperatureField.setText(value);
                                     break;
+                                case "Allergies":
+                                    temperatureField.setText(value);
+                                    break;
+                                case "Family History":
+                                    familyHistoryField.setText(value);
+                                    break;
+                                case "Immunizations":
+                                	immunizationsField.setText(value);
+                                    break;
+                                case "Prescriptions":
+                                	prescriptionsArea.setText(value);
+                                    break;
+                                case "Insurance Information":
+                                    insuranceArea.setText(value);
+                                    break;
                                 // Add cases for other fields if needed
+                            //
                             }
                             foundInfo = true;
                             break; // Stop searching once the information is found
@@ -152,8 +168,7 @@ public class Records extends GridPane {
                 e.printStackTrace();
             }
         }
-    }
-    
+    } 
     // Getters for retrieving text from fields
     public static void main(String[] args) {
         // You can add code here to test the Records class independently
