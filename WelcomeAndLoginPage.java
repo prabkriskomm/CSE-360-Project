@@ -1,209 +1,204 @@
 package application;
-//team 9 is amazing
-import javafx.application.Application;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
-public class WelcomeAndLoginPage extends Application {
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
-	private Stage primaryStage;
-    private LoginController loginController;
-    private StaffHomeTab staffHomeTab;
+public class PatientHomeTab extends BorderPane {
+	private Label welcomeLabel;
+	private String patientName;
+    private VBox messageDisplayArea;
+	private TabPane tabs;
+	
 
-    public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        primaryStage.setTitle("Welcome to MEDIATE");
+    public PatientHomeTab() {
+        welcomeLabel = new Label();
+    	createTabs();
+        currentPatient();
+    }
+    
 
-        // Initialize the StaffHomeTab
-        staffHomeTab = new StaffHomeTab();
 
-        // Initialize the LoginController with StaffHomeTab instance
-        loginController = new LoginController(primaryStage, staffHomeTab);
+    private void createTabs() {
+    	tabs = new TabPane();
+    	
 
-        // Header
-        Text headerText = new Text("MEDIATE");
-        headerText.setFont(Font.font(30));
+        Tab homeTab = new Tab("Home", createHomeInterface());
+        Tab healthRecordTab = new Tab("Health Record", new PatientHealthRecord());
+        Tab messagesTab = new Tab("Messages", createMessagingInterface());
+        Tab visitsTab = new Tab("Visits", new PatientVisitsTab());
 
-        // Subheader
-        Text subHeaderText = new Text("Empowering health, One click at a time");
+        tabs.getTabs().addAll(homeTab, healthRecordTab, messagesTab, visitsTab);
+        tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-        // Buttons
-        Button employeeLoginButton = new Button("Employee Login");
-        Button patientLoginButton = new Button("Patient Login");
-
-        // Employee login button action
-        employeeLoginButton.setOnAction(e -> loginController.showEmployeeLoginPage());
-
-        // Patient login button action
-        patientLoginButton.setOnAction(e -> loginController.showPatientLoginPage());
-
-        // Layout for welcome page
-        HBox buttonLayout = new HBox(20);
-        buttonLayout.setAlignment(Pos.CENTER);
-        buttonLayout.getChildren().addAll(employeeLoginButton, patientLoginButton);
-
-        VBox welcomeLayout = new VBox(20);
-        welcomeLayout.setAlignment(Pos.CENTER);
-        welcomeLayout.setPadding(new Insets(50));
-        welcomeLayout.getChildren().addAll(headerText, subHeaderText, buttonLayout);
-
-        // Scene for welcome page
-        Scene welcomeScene = new Scene(welcomeLayout, 400, 300);
-
-        primaryStage.setScene(welcomeScene);
-        primaryStage.show();
+        setCenter(tabs);
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-}
-
-class LoginController {
-
-    private Stage primaryStage;
-    private StaffHomeTab staffHomeTab;
-
-    public LoginController(Stage primaryStage, StaffHomeTab staffHomeTab) {
-        this.primaryStage = primaryStage;
-        this.staffHomeTab = staffHomeTab;
-    }
-
-    public void showEmployeeLoginPage() {
-        primaryStage.setTitle("Employee Login");
-
-        // Header
-        Text headerText = new Text("Employee Login");
-        headerText.setFont(Font.font(15));
-
-        // Input fields
-        TextField firstNameField = new TextField();
-        firstNameField.setPromptText("First Name");
-        TextField lastNameField = new TextField();
-        lastNameField.setPromptText("Last Name");
-
-        // Horizontal layout for first name and last name
-        HBox nameLayout = new HBox(10);
-        nameLayout.getChildren().addAll(firstNameField, lastNameField);
-
-        // Password field
-        PasswordField passwordField = new PasswordField();
-        passwordField.setPromptText("Password");
-
-        // Birthday field
-        TextField birthdayField = new TextField();
-        birthdayField.setPromptText("Birthday");
-
-        // Login button
-        Button loginButton = new Button("Login");
-
-        // Back button
-        Button backButton = new Button("<- Back");
-        backButton.setOnAction(e -> {
-            WelcomeAndLoginPage welcomePage = new WelcomeAndLoginPage();
-            welcomePage.start(primaryStage);
-        });
-
-        // Horizontal layout for birthday field, login button, and back button
-        HBox bottomLayout = new HBox(10);
-        bottomLayout.getChildren().addAll(birthdayField, loginButton, backButton);
-
-        // Welcome Back text
-        Text welcomeBackText = new Text("Welcome back");
-        welcomeBackText.setFont(Font.font(25));
-
-        // Layout for login page
-        VBox loginLayout = new VBox(20);
-        loginLayout.setAlignment(Pos.CENTER);
-        loginLayout.setPadding(new Insets(50));
-
-        loginLayout.getChildren().addAll(welcomeBackText, headerText, nameLayout, passwordField, bottomLayout);
-
-        // Scene for login page
-        Scene loginScene = new Scene(loginLayout, 400, 300);
-
-        primaryStage.setScene(loginScene);
-        primaryStage.show();
+    private BorderPane createHomeInterface() {
+        Button initialsButton = new Button("Edit Profile");
+        initialsButton.setStyle("-fx-font-weight: bold;");
         
-        loginButton.setOnAction(e -> {
-            primaryStage.setTitle("Mediate - Staff Home");
-            primaryStage.setScene(new Scene(staffHomeTab, 800, 600));
-            primaryStage.show();
+        initialsButton.setOnAction(e -> {
+            Tab editProfileTab = ChangeContactInfo.createEditProfileTab();
+            tabs.getTabs().add(editProfileTab);
+            tabs.getSelectionModel().select(editProfileTab);
         });
+       
+        
+
+
+        BorderPane topLayout = new BorderPane();
+        topLayout.setRight(initialsButton);
+
+        //welcomeLabel.setText("Welcome!"); //John needs to be changed to Patient.getFirstName()
+        welcomeLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        Label mediateLabel = new Label("MEDIATE");
+        mediateLabel.setStyle("-fx-font-size: 20px;");
+
+        Label oneClickLabel = new Label("Empowering Health, One Click at a Time.");
+        oneClickLabel.setStyle("-fx-font-size: 16px;");
+
+        VBox sloganBox = new VBox(mediateLabel, oneClickLabel);
+        sloganBox.setAlignment(Pos.CENTER);
+
+        VBox centerBox = new VBox(welcomeLabel, sloganBox);
+        centerBox.setAlignment(Pos.CENTER);
+        centerBox.setSpacing(10);
+
+        BorderPane homeLayout = new BorderPane();
+        homeLayout.setTop(topLayout);
+        homeLayout.setCenter(centerBox);
+
+        return homeLayout;
     }
 
-    public void showPatientLoginPage() {
-        primaryStage.setTitle("Patient Login");
+    private BorderPane createMessagingInterface() {
+        messageDisplayArea = new VBox(5);
+        messageDisplayArea.setPadding(new Insets(10));
+        messageDisplayArea.setFillWidth(true);
+        messageDisplayArea.setStyle("-fx-background-coler: #D3D3D3;");
 
-        // Header
-        Text headerText = new Text("Patient Login");
-        headerText.setFont(Font.font(15));
+        ScrollPane scrollPane = new ScrollPane(messageDisplayArea);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setVvalue(1.0);
+        //get the patient name from the log in page
+        //patientName = ("Kaitlyn");
+        //loadChatHistory(patientName);
 
-        // Input fields
-        TextField firstNameField = new TextField();
-        firstNameField.setPromptText("First Name");
-        TextField lastNameField = new TextField();
-        lastNameField.setPromptText("Last Name");
+        TextArea messageArea = new TextArea();
+        messageArea.setPromptText("Type your message here");
 
-        // Horizontal layout for first name and last name
-        HBox nameLayout = new HBox(10);
-        nameLayout.getChildren().addAll(firstNameField, lastNameField);
-
-        // Password field
-        PasswordField passwordField = new PasswordField();
-        passwordField.setPromptText("Password");
-
-        // Birthday field
-        TextField birthdayField = new TextField();
-        birthdayField.setPromptText("Birthday");
-
-        // Login button
-        Button loginButton = new Button("Login");
-
-        // Back button
-        Button backButton = new Button("<- Back");
-        backButton.setOnAction(e -> {
-            WelcomeAndLoginPage welcomePage = new WelcomeAndLoginPage();
-            welcomePage.start(primaryStage);
+        
+        Button sendButton = new Button("Send");
+        sendButton.setMaxWidth(Double.MAX_VALUE);
+        sendButton.setOnAction(event -> {
+            String message = messageArea.getText();
+            if (!message.isEmpty()) {
+                // Add message to chat log file
+                File file = new File("chat_history.txt");
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                    Label messageLabel = new Label(message);
+                    messageLabel.setMaxWidth(Double.MAX_VALUE);
+                    messageLabel.setAlignment(Pos.TOP_RIGHT); 
+                    messageLabel.setStyle("-fx-background-color: lightgray; -fx-padding: 5;");
+                    messageDisplayArea.getChildren().add(messageLabel); 
+                    messageArea.clear();
+                    //formatting messages in the log from the patient 
+                    String formattedMessage = patientName + ": " + message;
+                    writer.write(formattedMessage);
+                    writer.newLine();
+                    System.out.println("Message sent and saved to chat history.");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // Clear the text area after sending the message
+                messageArea.clear();
+            }
         });
 
-        // Horizontal layout for birthday field, login button, and back button
-        HBox bottomLayout = new HBox(10);
-        bottomLayout.getChildren().addAll(birthdayField, loginButton, backButton);
-
-        // Welcome Back text
-        Text welcomeBackText = new Text("Welcome back");
-        welcomeBackText.setFont(Font.font(25));
-
-        // Layout for login page
-        VBox loginLayout = new VBox(20);
-        loginLayout.setAlignment(Pos.CENTER);
-        loginLayout.setPadding(new Insets(50));
-
-        loginLayout.getChildren().addAll(welcomeBackText, headerText, nameLayout, passwordField, bottomLayout);
-
-        // Scene for login page
-        Scene loginScene = new Scene(loginLayout, 400, 300);
-
-        primaryStage.setScene(loginScene);
-        primaryStage.show();
-
-        loginButton.setOnAction(e -> {
-            primaryStage.setTitle("Patient Home");
-            PatientHomeTab patientHomeTab = new PatientHomeTab(); // Create an instance of PatientHomeTab
-            primaryStage.setScene(new Scene(patientHomeTab, 800, 600)); // Set the scene to the patient home tab
-            primaryStage.show();
+        Button endChatButton = new Button("End Chat");
+        endChatButton.setOnAction(event -> {
+            // Clear text area after saving the message
+            messageArea.clear();
         });
+
+        VBox buttonBox = new VBox(10, sendButton, endChatButton);
+        VBox.setVgrow(sendButton, Priority.ALWAYS);
+        VBox.setVgrow(endChatButton, Priority.ALWAYS);
+
+        HBox messageBox = new HBox(10);
+        HBox.setHgrow(messageArea, Priority.ALWAYS);
+        messageBox.getChildren().addAll(messageArea, buttonBox);
+        messageBox.setPadding(new Insets(10));
+
+        BorderPane messageLayout = new BorderPane();
+        messageLayout.setCenter(scrollPane);
+        messageLayout.setBottom(messageBox);
+        messageLayout.setStyle("-fx-background-color: #D3D3D3;");
+
+        return messageLayout;
+    }
+    
+    private void loadChatHistory(String name) {
+        File file = new File("chat_history.txt");
+        if (file.exists()) {
+        	//read the file
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                //read the file till you get to an empty line
+                while ((line = reader.readLine()) != null) {
+                	//if theirs the patient name, either to or from pull the line and display it 
+                    if (line.startsWith("Doctor to " + name + ":") || line.startsWith(name + ":")) {
+                        Label messageLabel = new Label(line);
+                        messageLabel.setMaxWidth(Double.MAX_VALUE);
+                        messageLabel.setAlignment(Pos.TOP_LEFT);
+                        messageDisplayArea.getChildren().add(messageLabel);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
+    private void currentPatient() {
+        File file = new File("Current_Patient.txt");
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Trim the line to remove leading and trailing whitespace
+                    line = line.trim();
+                    welcomeLabel.setText("Welcome, " + line);
+                    loadChatHistory(line);
+                    patientName = line;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // If the file doesn't exist, display a message indicating that
+            welcomeLabel.setText("Patient file not found.");
+        }
+    }
 }
