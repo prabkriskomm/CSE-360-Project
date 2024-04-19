@@ -1,10 +1,18 @@
 package application;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -14,6 +22,13 @@ import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 
 public class SignUpPage extends Application {
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String password;
+	private String confirmPassword;
+	private String phoneNumber;
+	private String insuranceInfo;
 
     @Override
     public void start(Stage primaryStage) {
@@ -45,6 +60,8 @@ public class SignUpPage extends Application {
         TextField insuranceInfoField = new TextField();
         insuranceInfoField.setPromptText("Insurance Info");
         
+        DatePicker datePicker = new DatePicker();
+        datePicker.setPromptText("Birthday");
         
 
         // Error message text
@@ -53,13 +70,18 @@ public class SignUpPage extends Application {
         // Sign Up button
         Button signUpButton = new Button("Sign Up");
         signUpButton.setOnAction(e -> {
-            String firstName = firstNameField.getText();
-            String lastName = lastNameField.getText();
-            String email = emailField.getText();
-            String password = passwordField.getText();
-            String confirmPassword = confirmPasswordField.getText();
-            String phoneNumber = phoneNumberField.getText();
-            String insuranceInfo = insuranceInfoField.getText();
+        	LocalDate date = datePicker.getValue();
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        	// Convert the LocalDate to a string using the formatter
+        	String dateString = date.format(formatter);
+            firstName = firstNameField.getText();
+            lastName = lastNameField.getText();
+            email = emailField.getText();
+            password = passwordField.getText();
+            confirmPassword = confirmPasswordField.getText();
+            phoneNumber = phoneNumberField.getText();
+            insuranceInfo = insuranceInfoField.getText();
+            save(dateString);
             
             if(password.equals(confirmPassword)) {
                 // Assuming Patient class extends User or has similar attributes
@@ -90,7 +112,7 @@ public class SignUpPage extends Application {
 
         // Layout for the sign up form
         VBox formLayout = new VBox(10);
-        formLayout.getChildren().addAll(firstNameField, lastNameField, emailField, passwordField, confirmPasswordField, errorMessage, signUpButton, backButton);
+        formLayout.getChildren().addAll(firstNameField, lastNameField, emailField, passwordField, confirmPasswordField, datePicker, errorMessage, signUpButton, backButton);
         formLayout.setAlignment(Pos.CENTER);
 
         // Overall layout
@@ -105,8 +127,22 @@ public class SignUpPage extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    void save(String dateString) {
+        File file = new File("Patient_Profiles.txt");
+        //writing to file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+            //formatting the message for the file
+            String formattedMessage = firstName + ", " + lastName + ", " + email + ", " + password + ", " + dateString;
+            writer.write(formattedMessage);
+            writer.newLine();
+            System.out.println("Saved to Patient File.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
         launch(args);
     }
+    
 }
