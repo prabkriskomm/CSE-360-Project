@@ -1,7 +1,15 @@
 package application;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 //team 9 is amazing
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -48,6 +56,16 @@ public class Diagnosis extends GridPane {
         TextArea prescriptionArea = new TextArea();
         prescriptionArea.setPromptText("Enter prescription details...");
 
+        Button savebtn = new Button("Save");
+        savebtn.setOnAction(event->{
+        	LocalDate date = datePicker.getValue();
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        	// Convert the LocalDate to a string using the formatter
+        	String dateString = date.format(formatter);
+        	save(nameField.getText(), dateString, "Course of Action", courseOfActionArea.getText());
+        	save(nameField.getText(), dateString, "Diagnosis", diagnosisArea.getText());
+        	save(nameField.getText(), dateString, "Prescription", prescriptionArea.getText());
+        });
         // Add controls to the grid
         this.add(infoBox, 0, 0, 2, 1); // Span two columns for full width
 
@@ -55,7 +73,7 @@ public class Diagnosis extends GridPane {
         this.add(diagnosisArea, 0, 1);
         this.add(courseOfActionArea, 1, 1);
         this.add(prescriptionArea, 0, 2, 2, 1); // Span two columns for full width
-
+        this.add(savebtn, 3, 2);
         // Set column constraints to make the second column grow with the form
         ColumnConstraints col1 = new ColumnConstraints();
         ColumnConstraints col2 = new ColumnConstraints();
@@ -66,5 +84,18 @@ public class Diagnosis extends GridPane {
         RowConstraints row1 = new RowConstraints();
         row1.setVgrow(Priority.ALWAYS);
         this.getRowConstraints().addAll(row1, new RowConstraints(), new RowConstraints());
+    }
+    void save(String name, String date, String Label, String message) {
+        File file = new File("Patient_Data.txt");
+        //writing to file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+            //formatting the message for the file 
+            String formattedMessage = name + ", " + date + ", " + Label + ": " + message;
+            writer.write(formattedMessage);
+            writer.newLine();
+            System.out.println("Saved to Patient File.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
