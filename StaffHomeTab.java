@@ -1,5 +1,5 @@
 package application;
-
+//team 9 is amazing
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -78,6 +78,9 @@ public class StaffHomeTab extends BorderPane {
         
         PatientIntake intakePage = new PatientIntake();
         intakeTab.setContent(intakePage);
+
+        StaffMessaging StaffMessagePage = new StaffMessaging();
+        messagesTab.setContent(StaffMessagePage);
 
         
     }
