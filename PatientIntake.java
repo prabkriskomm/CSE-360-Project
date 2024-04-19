@@ -161,33 +161,29 @@ public class PatientIntake extends BorderPane {
         	// Convert the LocalDate to a string using the formatter
         	String dateString = date.format(formatter);
         	
-        	save(nameField.getText(),"date", dateString);
-        	save(nameField.getText(), "age", ageField.getText());
+        	save(nameField.getText(),"Date", dateString);
+        	save(nameField.getText(), "Age", ageField.getText());
         	save(nameField.getText(), "Heart Rate", bpmField.getText());
         	save(nameField.getText(), "Temperature", tempField.getText());
-        	save(nameField.getText(), "height", heightField.getText());
-        	save(nameField.getText(), "weight", weightField.getText());
+        	save(nameField.getText(), "Height", heightField.getText());
+        	save(nameField.getText(), "Weight", weightField.getText());
+        	//save(nameField.getText(), "Health Concerns", weightField.getText());
         	
         });
     }
 
     void save(String name, String Label, String message) {
-                   File file = new File("Patient_Data.txt");
-                   //writing to file
-                   try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-                   	// adding the message to the chat log file
-                       Label messageLabel = new Label(message);
-                       messageLabel.setMaxWidth(Double.MAX_VALUE);
-                       messageLabel.setAlignment(Pos.TOP_RIGHT); 
-                       messageLabel.setStyle("-fx-background-color: lightgray; -fx-padding: 5;");
-                       //formatting the message for the file 
-                       String formattedMessage = name+ ", " + Label + ": " + message;
-                       writer.write(formattedMessage);
-                       writer.newLine();
-                       System.out.println("Saved to Patient File.");
-                   } catch (IOException e) {
-                       e.printStackTrace();
-                   }
-               }
+        File file = new File("Patient_Data.txt");
+        //writing to file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+            //formatting the message for the file 
+            String formattedMessage = name + ", " + Label + ": " + message;
+            writer.write(formattedMessage);
+            writer.newLine();
+            System.out.println("Saved to Patient File.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+}
 
