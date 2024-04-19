@@ -1,5 +1,5 @@
 package application;
-
+//team 9 is amazing
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,16 +15,19 @@ import javafx.stage.Stage;
 
 public class WelcomeAndLoginPage extends Application {
 
-    private Stage primaryStage;
+	private Stage primaryStage;
     private LoginController loginController;
+    private StaffHomeTab staffHomeTab;
 
-    @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Welcome to MEDIATE");
 
-        // Initialize the LoginController
-        loginController = new LoginController(primaryStage);
+        // Initialize the StaffHomeTab
+        staffHomeTab = new StaffHomeTab();
+
+        // Initialize the LoginController with StaffHomeTab instance
+        loginController = new LoginController(primaryStage, staffHomeTab);
 
         // Header
         Text headerText = new Text("MEDIATE");
@@ -63,14 +66,17 @@ public class WelcomeAndLoginPage extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }
 
 class LoginController {
 
     private Stage primaryStage;
+    private StaffHomeTab staffHomeTab;
 
-    public LoginController(Stage primaryStage) {
+    public LoginController(Stage primaryStage, StaffHomeTab staffHomeTab) {
         this.primaryStage = primaryStage;
+        this.staffHomeTab = staffHomeTab;
     }
 
     public void showEmployeeLoginPage() {
@@ -128,6 +134,12 @@ class LoginController {
 
         primaryStage.setScene(loginScene);
         primaryStage.show();
+        
+        loginButton.setOnAction(e -> {
+            primaryStage.setTitle("Mediate - Staff Home");
+            primaryStage.setScene(new Scene(staffHomeTab, 800, 600));
+            primaryStage.show();
+        });
     }
 
     public void showPatientLoginPage() {
@@ -185,5 +197,13 @@ class LoginController {
 
         primaryStage.setScene(loginScene);
         primaryStage.show();
+
+        loginButton.setOnAction(e -> {
+            primaryStage.setTitle("Patient Home");
+            PatientHomeTab patientHomeTab = new PatientHomeTab(); // Create an instance of PatientHomeTab
+            primaryStage.setScene(new Scene(patientHomeTab, 800, 600)); // Set the scene to the patient home tab
+            primaryStage.show();
+        });
     }
+
 }
