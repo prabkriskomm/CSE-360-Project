@@ -21,6 +21,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 
 public class PatientHealthRecord extends GridPane {
+	private String PatientName;
     private TextArea diagnosisArea;
     private TextArea courseOfActionArea;
     private TextArea medicalHistoryArea;
@@ -29,6 +30,7 @@ public class PatientHealthRecord extends GridPane {
     
     public PatientHealthRecord() {
         createRegistrationFormPane();
+        currentPatient();
     }
 
     void createRegistrationFormPane() {
@@ -38,9 +40,6 @@ public class PatientHealthRecord extends GridPane {
         this.setVgap(10);
 
         // Add UI controls
-        TextField nameField = new TextField();
-        nameField.setPromptText("Patient Information");
-
         TextField physicianField = new TextField();
         physicianField.setPromptText("Referance Dr/Primary Physician");
 
@@ -49,7 +48,7 @@ public class PatientHealthRecord extends GridPane {
 
         HBox infoBox = new HBox(10);
         infoBox.setAlignment(Pos.CENTER_LEFT);
-        infoBox.getChildren().addAll(nameField, new Region(), physicianField, new Region(), datePicker);
+        infoBox.getChildren().addAll(new Region(), physicianField, new Region(), datePicker);
 
         HBox.setHgrow(infoBox.getChildren().get(1), Priority.ALWAYS);
         HBox.setHgrow(infoBox.getChildren().get(3), Priority.ALWAYS);
@@ -75,11 +74,11 @@ public class PatientHealthRecord extends GridPane {
         	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         	// Convert the LocalDate to a string using the formatter
         	String dateString = date.format(formatter);
-        	loadPatientInfo(nameField.getText(), dateString, "Prescription");
-        	loadPatientInfo(nameField.getText(), dateString, "Diagnosis");
-        	loadPatientInfo(nameField.getText(), dateString, "Medical History");
-        	loadPatientInfo(nameField.getText(), dateString, "Course of Action");
-        	loadPatientInfo(nameField.getText(), dateString, "Insurance Information");
+        	loadPatientInfo(PatientName, dateString, "Prescription");
+        	loadPatientInfo(PatientName, dateString, "Diagnosis");
+        	loadPatientInfo(PatientName, dateString, "Medical History");
+        	loadPatientInfo(PatientName, dateString, "Course of Action");
+        	loadPatientInfo(PatientName, dateString, "Insurance Information");
         });
         // Add components to the grid
         this.add(infoBox, 0, 0, 3, 1);
@@ -150,5 +149,22 @@ public class PatientHealthRecord extends GridPane {
                 e.printStackTrace();
             }
         }
+    }
+    private void currentPatient() {
+        File file = new File("Current_Patient.txt");
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Trim the line to remove leading and trailing whitespace
+                    line = line.trim();
+                    PatientName = line;
+                    
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } 
     }
 }
