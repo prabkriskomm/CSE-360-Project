@@ -24,13 +24,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class PatientHomeTab extends BorderPane {
+	private Label welcomeLabel;
 	private String patientName;
     private VBox messageDisplayArea;
 	private TabPane tabs;
 	
 
     public PatientHomeTab() {
-        createTabs();
+        welcomeLabel = new Label();
+    	createTabs();
+        currentPatient();
     }
     
 
@@ -66,7 +69,7 @@ public class PatientHomeTab extends BorderPane {
         BorderPane topLayout = new BorderPane();
         topLayout.setRight(initialsButton);
 
-        Label welcomeLabel = new Label("Welcome, John!"); //John needs to be changed to Patient.getFirstName()
+        //welcomeLabel.setText("Welcome!"); //John needs to be changed to Patient.getFirstName()
         welcomeLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         Label mediateLabel = new Label("MEDIATE");
@@ -99,8 +102,8 @@ public class PatientHomeTab extends BorderPane {
         scrollPane.setFitToWidth(true);
         scrollPane.setVvalue(1.0);
         //get the patient name from the log in page
-        patientName = ("Kaitlyn");
-        loadChatHistory(patientName);
+        //patientName = ("Kaitlyn");
+        //loadChatHistory(patientName);
 
         TextArea messageArea = new TextArea();
         messageArea.setPromptText("Type your message here");
@@ -175,6 +178,27 @@ public class PatientHomeTab extends BorderPane {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void currentPatient() {
+        File file = new File("Current_Patient.txt");
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Trim the line to remove leading and trailing whitespace
+                    line = line.trim();
+                    welcomeLabel.setText("Welcome, " + line);
+                    loadChatHistory(line);
+                    patientName = line;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // If the file doesn't exist, display a message indicating that
+            welcomeLabel.setText("Patient file not found.");
         }
     }
 }
