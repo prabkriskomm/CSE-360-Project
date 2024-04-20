@@ -82,12 +82,12 @@ public class PatientHealthRecord extends GridPane {
         });
         // Add components to the grid
         this.add(infoBox, 0, 0, 3, 1);
-        this.add(diagnosisArea, 0, 2, 1, 2);
-        this.add(courseOfActionArea, 1, 2, 1, 2);
-        this.add(prescriptionArea, 0, 5, 3, 1);
-        this.add(medicalHistoryArea, 0, 6, 3, 1);
-        this.add(insuranceInformationArea, 0, 7, 3, 1);
-        this.add(savebtn, 0, 8, 1, 1);
+        this.add(diagnosisArea, 0, 1, 1, 2);
+        this.add(courseOfActionArea, 1, 1, 1, 2);
+        this.add(prescriptionArea, 0, 3, 3, 1);
+        this.add(medicalHistoryArea, 0, 4, 3, 1);
+        this.add(insuranceInformationArea, 0, 5, 3, 1);
+        this.add(savebtn, 0, 6, 1, 1);
 
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setHgrow(Priority.ALWAYS);

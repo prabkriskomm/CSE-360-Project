@@ -186,4 +186,3 @@ public class PatientIntake extends BorderPane {
         }
     }
 }
-
