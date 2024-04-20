@@ -15,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -179,6 +180,13 @@ class LoginController {
 
         // Login button
         Button loginButton = new Button("Login");
+        
+        Hyperlink signUpLink = new Hyperlink("Sign up here");
+        signUpLink.setOnAction(e -> {
+        // Assuming you have a method showSignUpPage() that displays the sign-up page
+        showSignUpPage();
+    });
+
 
         // Back button
         Button backButton = new Button("<- Back");
@@ -189,7 +197,7 @@ class LoginController {
 
         // Horizontal layout for birthday field, login button, and back button
         HBox bottomLayout = new HBox(10);
-        bottomLayout.getChildren().addAll(datePicker, loginButton, backButton);
+        bottomLayout.getChildren().addAll(datePicker, loginButton, backButton, signUpLink);
 
         // Welcome Back text
         Text welcomeBackText = new Text("Welcome back");
@@ -232,6 +240,12 @@ class LoginController {
             e.printStackTrace();
         }
     }
+	private void showSignUpPage() {
+		// TODO Auto-generated method stub
+		SignUpPage signUpPage = new SignUpPage();
+	    signUpPage.start(primaryStage);
+	}
+
     void loadPatientInfo(String firstName, String lastName, String password, String date) {
         File file = new File("Patient_Profiles.txt");
         if (file.exists()) {
